@@ -1,7 +1,8 @@
-const CACHE_NAME = 'rea-study-cache-v1';
+const CACHE_NAME = 'rea-study-cache-v2';
 const ASSETS = [
   './',
   './index.html',
+  './calc.html',
   './manifest.json',
   './icon.svg'
 ];

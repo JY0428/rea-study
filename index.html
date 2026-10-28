@@ -975,6 +975,9 @@
           <button class="subject-tab" data-subject="intro_calc">
             🧮 학개론 계산공식 <span class="count-badge" id="count-intro_calc">31</span>
           </button>
+          <a href="./calc.html" class="subject-tab" style="text-decoration:none; background:linear-gradient(135deg,#2563eb,#1d4ed8); color:#ffffff; border-color:#1d4ed8;" title="학개론 100선·동형·단원별 계산문제 107제 실전 풀이 웹앱으로 이동">
+            📐 계산문제 실전풀이 <span class="count-badge" style="background:rgba(255,255,255,0.25); color:#ffffff;">107</span>
+          </a>
           <button class="subject-tab" data-subject="review_all">
             🔥 미암기 모아보기 <span class="count-badge" id="count-review_all">0</span>
           </button>
@@ -3222,7 +3225,7 @@
       // Event Listeners
       document.getElementById('subjectTabs').addEventListener('click', e => {
         const tab = e.target.closest('.subject-tab');
-        if (!tab) return;
+        if (!tab || tab.tagName === 'A') return;
         currentSubject = tab.getAttribute('data-subject');
         currentCategory = '전체';
         document.querySelectorAll('.subject-tab').forEach(t => t.classList.toggle('active', t === tab));
