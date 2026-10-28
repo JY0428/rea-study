@@ -1,0 +1,3503 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <meta name="theme-color" content="#1e293b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="공인중개사 암기마스터" />
+  <link rel="manifest" href="manifest.json" />
+  <title>공인중개사 암기코드 & 계산공식 마스터</title>
+  <style>
+    :root {
+      --bg-main: #f4f6f9;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f8fafc;
+      --bg-code: #fffbeb;
+      --border-code: #fde68a;
+      --text-main: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border-color: #e2e8f0;
+      --primary: #2563eb;
+      --primary-soft: #eff6ff;
+      --accent-red: #dc2626;
+      --accent-red-bg: #fef2f2;
+      --accent-amber: #d97706;
+      --accent-amber-bg: #fffbeb;
+      --accent-green: #16a34a;
+      --accent-green-bg: #f0fdf4;
+      --mark-bg: #fef08a;
+      --mark-text: #854d0e;
+      --blind-bg: #cbd5e1;
+      --blind-border: #94a3b8;
+      --blind-text: #475569;
+      --calc-bg: #f0f9ff;
+      --calc-border: #bae6fd;
+      --keycap-bg: #1e293b;
+      --keycap-text: #f8fafc;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --font-scale: 1;
+    }
+
+    [data-theme="dark"] {
+      --bg-main: #0b1120;
+      --bg-surface: #1e293b;
+      --bg-subtle: #152033;
+      --bg-code: #272316;
+      --border-code: #634d12;
+      --text-main: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #64748b;
+      --border-color: #334155;
+      --primary: #3b82f6;
+      --primary-soft: #1e3a8a44;
+      --accent-red: #f87171;
+      --accent-red-bg: #451a1a;
+      --accent-amber: #fbbf24;
+      --accent-amber-bg: #3f2e12;
+      --accent-green: #4ade80;
+      --accent-green-bg: #143523;
+      --mark-bg: #713f1288;
+      --mark-text: #fef08a;
+      --blind-bg: #334155;
+      --blind-border: #475569;
+      --blind-text: #94a3b8;
+      --calc-bg: #0c243c;
+      --calc-border: #1e4976;
+      --keycap-bg: #334155;
+      --keycap-text: #f8fafc;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.65;
+      font-size: calc(15.5px * var(--font-scale));
+      padding-bottom: 90px;
+    }
+
+    /* Sticky Top Navigation & Control Bar */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .top-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 10px 14px;
+    }
+
+    /* Row 1: Brand, Subject Tabs, Utility Icons */
+    .nav-row-1 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .subject-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex: 1;
+      padding-bottom: 2px;
+    }
+    .subject-tabs::-webkit-scrollbar { display: none; }
+
+    .subject-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .subject-tab:hover {
+      border-color: var(--primary);
+      color: var(--text-main);
+    }
+    .subject-tab.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    }
+    .subject-tab .count-badge {
+      font-size: 0.76rem;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.08);
+      font-weight: 600;
+    }
+    .subject-tab.active .count-badge {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    .util-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 36px;
+      padding: 0 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .icon-btn:hover {
+      border-color: var(--primary);
+      color: var(--text-main);
+    }
+
+    /* Row 2: Search + Blind Mode Controls */
+    .nav-row-2 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1 1 200px;
+      min-width: 160px;
+    }
+    .search-box input {
+      width: 100%;
+      height: 36px;
+      padding: 0 30px 0 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      font-size: 0.88rem;
+      outline: none;
+    }
+    .search-box input:focus {
+      border-color: var(--primary);
+      background: var(--bg-surface);
+    }
+    .search-box .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+    .search-box .clear-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: none;
+      padding: 2px 4px;
+    }
+
+    .blind-controls {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex: 2 1 auto;
+    }
+    .blind-controls::-webkit-scrollbar { display: none; }
+
+    .blind-btn {
+      padding: 6px 11px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .blind-btn.active {
+      background: #0f172a;
+      color: #f8fafc;
+      border-color: #0f172a;
+    }
+    [data-theme="dark"] .blind-btn.active {
+      background: #f8fafc;
+      color: #0f172a;
+      border-color: #f8fafc;
+    }
+
+    /* Row 3: Category Filter Chips & Status Filter Chips */
+    .nav-row-3 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip-scroll {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+      max-width: 100%;
+    }
+    .chip-scroll::-webkit-scrollbar { display: none; }
+
+    .filter-chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      font-size: 0.79rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .filter-chip.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+      border-color: var(--primary);
+      font-weight: 700;
+    }
+
+    .status-filter-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .status-filter-group::-webkit-scrollbar { display: none; }
+
+    .status-chip {
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .status-chip.active {
+      border-color: var(--text-main);
+      background: var(--text-main);
+      color: var(--bg-surface);
+    }
+
+    /* Progress Bar Strip */
+    .progress-strip {
+      max-width: 1080px;
+      margin: 12px auto 4px;
+      padding: 0 14px;
+    }
+    .progress-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .progress-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      flex-wrap: wrap;
+    }
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .stat-pill.known { background: var(--accent-green-bg); color: var(--accent-green); }
+    .stat-pill.fuzzy { background: var(--accent-amber-bg); color: var(--accent-amber); }
+    .stat-pill.unknown { background: var(--accent-red-bg); color: var(--accent-red); }
+
+    .progress-bar-wrap {
+      flex: 1 1 180px;
+      height: 8px;
+      background: var(--bg-subtle);
+      border-radius: 999px;
+      overflow: hidden;
+      display: flex;
+      border: 1px solid var(--border-color);
+    }
+    .bar-seg-known { background: var(--accent-green); height: 100%; transition: width 0.3s; }
+    .bar-seg-fuzzy { background: var(--accent-amber); height: 100%; transition: width 0.3s; }
+    .bar-seg-unknown { background: var(--accent-red); height: 100%; transition: width 0.3s; }
+
+    /* Main List Container */
+    .main-container {
+      max-width: 1080px;
+      margin: 10px auto;
+      padding: 0 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Study Item Card */
+    .study-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-left: 5px solid var(--primary);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: transform 0.12s, box-shadow 0.12s, border-color 0.2s;
+    }
+    .study-card[data-status="known"] {
+      border-left-color: var(--accent-green);
+    }
+    .study-card[data-status="fuzzy"] {
+      border-left-color: var(--accent-amber);
+    }
+    .study-card[data-status="unknown"] {
+      border-left-color: var(--accent-red);
+    }
+
+    /* Card Header */
+    .card-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--bg-subtle);
+    }
+
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .num-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 24px;
+      padding: 0 7px;
+      border-radius: 6px;
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.78rem;
+    }
+
+    .cat-badge {
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .page-badge {
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 0.73rem;
+      font-weight: 700;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 1.06rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.4;
+      word-break: keep-all;
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .status-btn {
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      border-radius: 7px;
+      padding: 4px 8px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.12s;
+    }
+    .status-btn:hover {
+      border-color: var(--text-secondary);
+      color: var(--text-main);
+    }
+    .status-btn.active-unknown {
+      background: var(--accent-red);
+      color: #ffffff;
+      border-color: var(--accent-red);
+    }
+    .status-btn.active-fuzzy {
+      background: var(--accent-amber);
+      color: #ffffff;
+      border-color: var(--accent-amber);
+    }
+    .status-btn.active-known {
+      background: var(--accent-green);
+      color: #ffffff;
+      border-color: var(--accent-green);
+    }
+
+    .card-peek-btn {
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      border-radius: 7px;
+      padding: 4px 7px;
+      font-size: 0.76rem;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    /* Card Body */
+    .card-body {
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Mnemonic Code Box */
+    .mnemonic-box {
+      position: relative;
+      background: var(--bg-code);
+      border: 1.5px solid var(--border-code);
+      border-radius: 10px;
+      padding: 11px 14px;
+      transition: all 0.15s;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: var(--accent-amber);
+      margin-bottom: 4px;
+    }
+
+    .mnemonic-content {
+      font-size: 1.03rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.55;
+      white-space: pre-line;
+    }
+
+    /* Detail / Formula Box */
+    .detail-box {
+      position: relative;
+      background: var(--bg-surface);
+      border-radius: 8px;
+      padding: 2px 2px;
+      color: var(--text-main);
+    }
+    .detail-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .detail-content {
+      font-size: 0.96rem;
+      line-height: 1.72;
+    }
+    .detail-content p {
+      margin: 5px 0;
+    }
+    .detail-content ul, .detail-content ol {
+      margin: 4px 0;
+      padding-left: 22px;
+    }
+    .detail-content li {
+      margin: 3px 0;
+    }
+    .detail-content h4 {
+      margin: 12px 0 6px;
+      font-size: 0.95rem;
+      color: var(--primary);
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 3px;
+    }
+
+    /* Highlighted & Bold Keywords */
+    .kw-bold {
+      color: var(--accent-red);
+      font-weight: 800;
+    }
+    .kw-mark {
+      background: var(--mark-bg);
+      color: var(--mark-text);
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-weight: 800;
+    }
+
+    /* Blind Token (Keyword Blank Mode) */
+    .blind-token {
+      transition: all 0.15s ease;
+      border-radius: 5px;
+    }
+    body.mode-keyword .study-card:not(.force-reveal) .blind-token:not(.revealed) {
+      background-color: var(--blind-bg) !important;
+      color: transparent !important;
+      border: 1px dashed var(--blind-border);
+      padding: 1px 6px;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+    }
+    body.mode-keyword .study-card:not(.force-reveal) .blind-token:not(.revealed) * {
+      color: transparent !important;
+      background: transparent !important;
+    }
+    body.mode-keyword .study-card:not(.force-reveal) .blind-token.revealed {
+      cursor: pointer;
+      outline: 1.5px dashed var(--primary);
+      padding: 0 3px;
+    }
+
+    /* Section Blind Overlay (Code Blind / Detail Blind / All Blind) */
+    .section-overlay {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      position: absolute;
+      inset: 0;
+      border-radius: 9px;
+      background: var(--bg-subtle);
+      border: 1.5px dashed var(--blind-border);
+      color: var(--text-secondary);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      z-index: 5;
+      user-select: none;
+    }
+    .section-overlay:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    body.mode-code .study-card:not(.force-reveal) .mnemonic-box:not(.revealed) .section-overlay,
+    body.mode-all .study-card:not(.force-reveal) .mnemonic-box:not(.revealed) .section-overlay {
+      display: flex;
+    }
+    body.mode-code .study-card:not(.force-reveal) .mnemonic-box:not(.revealed) .mnemonic-content,
+    body.mode-all .study-card:not(.force-reveal) .mnemonic-box:not(.revealed) .mnemonic-content {
+      visibility: hidden;
+    }
+
+    body.mode-detail .study-card:not(.force-reveal) .detail-box:not(.revealed) .section-overlay,
+    body.mode-all .study-card:not(.force-reveal) .detail-box:not(.revealed) .section-overlay {
+      display: flex;
+    }
+    body.mode-detail .study-card:not(.force-reveal) .detail-box:not(.revealed) .detail-content,
+    body.mode-all .study-card:not(.force-reveal) .detail-box:not(.revealed) .detail-content {
+      visibility: hidden;
+      min-height: 48px;
+    }
+
+    /* Markdown Tables (e.g., Seller Liability #35, Commercial Lease #42) */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+    table.study-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      min-width: 420px;
+    }
+    table.study-table th, table.study-table td {
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
+      text-align: center;
+    }
+    table.study-table th:last-child, table.study-table td:last-child {
+      border-right: none;
+    }
+    table.study-table th {
+      background: var(--bg-subtle);
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    table.study-table td:first-child {
+      text-align: left;
+      font-weight: 600;
+    }
+
+    /* Calculation Formula Special Components */
+    .formula-block {
+      background: var(--calc-bg);
+      border: 1px solid var(--calc-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin: 8px 0;
+      overflow-x: auto;
+    }
+    .math-eq {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 0.96rem;
+    }
+    .math-frac {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      vertical-align: middle;
+      padding: 2px 6px;
+    }
+    .math-frac .num {
+      border-bottom: 2px solid var(--text-main);
+      padding: 1px 6px 3px;
+      text-align: center;
+      width: 100%;
+    }
+    .math-frac .den {
+      padding: 3px 6px 1px;
+      text-align: center;
+      width: 100%;
+    }
+    .brace-box {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 4px 10px;
+    }
+    .brace-top {
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .brace-sub {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      border-top: 1px dashed var(--border-color);
+      margin-top: 2px;
+      padding-top: 2px;
+    }
+
+    /* Rice Calculator (쌀집 계산기) Keystroke Box */
+    .calc-keystroke-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 5px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid #0284c7;
+      border-radius: 8px;
+      padding: 7px 11px;
+      margin: 6px 0;
+      font-size: 0.86rem;
+    }
+    .calc-badge {
+      font-weight: 800;
+      color: #0284c7;
+      margin-right: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .keycap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 7px;
+      border-radius: 5px;
+      background: var(--keycap-bg);
+      color: var(--keycap-text);
+      font-family: "Consolas", "Monaco", monospace;
+      font-weight: 800;
+      font-size: 0.82rem;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+      margin: 1px;
+    }
+    .keycap.op {
+      background: #d97706;
+      color: #ffffff;
+    }
+    .keycap.gt {
+      background: #dc2626;
+      color: #ffffff;
+    }
+
+    /* Floating Bottom Quick Action Bar for Mobile */
+    .bottom-floating-bar {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 95;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(8px);
+      color: #f8fafc;
+      padding: 6px 10px;
+      border-radius: 999px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      max-width: 96vw;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .bottom-floating-bar::-webkit-scrollbar { display: none; }
+    .float-btn {
+      border: none;
+      background: transparent;
+      color: #cbd5e1;
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .float-btn.active {
+      background: #3b82f6;
+      color: #ffffff;
+    }
+
+    /* Modal Dialog */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-backdrop.open {
+      display: flex;
+    }
+    .modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      max-width: 540px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+    .modal-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+    .modal-section {
+      margin-bottom: 16px;
+      padding: 12px;
+      background: var(--bg-subtle);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+    .modal-section h4 {
+      margin: 0 0 6px;
+      font-size: 0.92rem;
+    }
+    .modal-textarea {
+      width: 100%;
+      height: 75px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      padding: 8px;
+      font-size: 0.8rem;
+      font-family: monospace;
+      margin-bottom: 8px;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      background: var(--bg-surface);
+      border-radius: 14px;
+      border: 1px dashed var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 640px) {
+      .card-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .card-actions {
+        justify-content: flex-end;
+      }
+      .top-inner {
+        padding: 8px 10px;
+      }
+    }
+  </style>
+</head>
+<body class="mode-none">
+
+  <!-- Top Sticky Header -->
+  <header class="top-bar">
+    <div class="top-inner">
+      <!-- Row 1: Subject Tabs & Utils -->
+      <div class="nav-row-1">
+        <div class="subject-tabs" id="subjectTabs">
+          <button class="subject-tab active" data-subject="civil">
+            ⚖️ 민법 암기코드 <span class="count-badge" id="count-civil">65</span>
+          </button>
+          <button class="subject-tab" data-subject="intro_code">
+            🏢 학개론 암기코드 <span class="count-badge" id="count-intro_code">72</span>
+          </button>
+          <button class="subject-tab" data-subject="intro_calc">
+            🧮 학개론 계산공식 <span class="count-badge" id="count-intro_calc">31</span>
+          </button>
+          <button class="subject-tab" data-subject="review_all">
+            🔥 미암기 모아보기 <span class="count-badge" id="count-review_all">0</span>
+          </button>
+        </div>
+        <div class="util-actions">
+          <button class="icon-btn" id="btnShuffle" title="목록 순서 랜덤 섞기">🎲 섞기</button>
+          <button class="icon-btn" id="btnFontSize" title="글자 크기 조절">가±</button>
+          <button class="icon-btn" id="btnSyncModal" title="PC↔모바일 진도 이어하기 및 파일 동기화">🔄 동기화</button>
+          <button class="icon-btn" id="btnTheme" title="라이트/다크 모드 전환">🌙</button>
+        </div>
+      </div>
+
+      <!-- Row 2: Search & Blind Mode Presets -->
+      <div class="nav-row-2">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="주제, 암기코드(예: 전일수용, 총총이부), 키워드 검색..." />
+          <button class="clear-btn" id="btnClearSearch">✕</button>
+        </div>
+        <div class="blind-controls" id="blindControls">
+          <button class="blind-btn active" data-blind="none">👁️ 전체보기</button>
+          <button class="blind-btn" data-blind="keyword">🔑 키워드 빈칸</button>
+          <button class="blind-btn" data-blind="code">🧠 암기코드 가리기</button>
+          <button class="blind-btn" data-blind="detail">📖 세부내용/공식 가리기</button>
+          <button class="blind-btn" data-blind="all">🙈 모두 가리기</button>
+        </div>
+      </div>
+
+      <!-- Row 3: Category Chips & Status Filter Chips -->
+      <div class="nav-row-3">
+        <div class="chip-scroll" id="categoryChips"></div>
+        <div class="status-filter-group" id="statusChips">
+          <button class="status-chip active" data-status-filter="all">전체</button>
+          <button class="status-chip" data-status-filter="unmastered">🎯 외웠음 제외(집중)</button>
+          <button class="status-chip" data-status-filter="unknown">🔥 못외움</button>
+          <button class="status-chip" data-status-filter="fuzzy">⚠️ 헷갈림</button>
+          <button class="status-chip" data-status-filter="known">✅ 외웠음</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Progress Strip -->
+  <section class="progress-strip">
+    <div class="progress-card">
+      <div class="progress-info">
+        <span id="currentViewLabel">민법 암기코드 (65개)</span>
+        <span class="stat-pill known" id="statKnown">✅ 외웠음 0</span>
+        <span class="stat-pill fuzzy" id="statFuzzy">⚠️ 헷갈림 0</span>
+        <span class="stat-pill unknown" id="statUnknown">🔥 못외움 0</span>
+      </div>
+      <div class="progress-bar-wrap" title="학습 진도율">
+        <div class="bar-seg-known" id="barKnown" style="width: 0%"></div>
+        <div class="bar-seg-fuzzy" id="barFuzzy" style="width: 0%"></div>
+        <div class="bar-seg-unknown" id="barUnknown" style="width: 0%"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Study Card List -->
+  <main class="main-container" id="cardList"></main>
+
+  <!-- Floating Bottom Quick Blind Switcher (Easy Thumb Access on Mobile) -->
+  <nav class="bottom-floating-bar" id="bottomBar">
+    <button class="float-btn active" data-blind="none">👁️ 전체</button>
+    <button class="float-btn" data-blind="keyword">🔑 빈칸</button>
+    <button class="float-btn" data-blind="code">🧠 코드가림</button>
+    <button class="float-btn" data-blind="detail">📖 내용가림</button>
+    <button class="float-btn" data-blind="all">🙈 백지복습</button>
+    <button class="float-btn" id="btnScrollTop">⬆ 맨위</button>
+  </nav>
+
+  <!-- Sync & Backup Modal -->
+  <div class="modal-backdrop" id="syncModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>🔄 학습 진도 이어하기 & 옵시디언 연동</h3>
+        <button class="icon-btn" id="btnCloseModal">닫기 ✕</button>
+      </div>
+
+      <div class="modal-section">
+        <h4>☁️ 구글 드라이브(클라우드) 원클릭 진도 동기화 (PC ↔ 모바일 자동연동)</h4>
+        <p style="font-size:0.82rem; color:var(--text-secondary); margin:4px 0 8px;">
+          구글 드라이브(Apps Script 웹앱 URL)를 한 번만 등록해 두면, 코드 복사 없이 <b>[☁️ 클라우드에 진도 저장]</b> / <b>[☁️ 클라우드에서 진도 불러오기]</b> 버튼만으로 PC와 스마트폰의 학습 기록이 실시간 동기화됩니다.
+        </p>
+        <div style="display:flex; gap:6px; margin-bottom:8px;">
+          <input type="text" id="cloudSyncUrlInput" placeholder="https://script.google.com/macros/s/.../exec (선택사항)" style="flex:1; height:34px; padding:0 10px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-surface); color:var(--text-main); font-size:0.8rem;" />
+          <button class="icon-btn" id="btnSaveCloudUrl">URL 저장</button>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn-primary" id="btnCloudPush">☁️ 클라우드에 내 진도 저장</button>
+          <button class="icon-btn" id="btnCloudPull">📥 클라우드에서 진도 불러오기</button>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <h4>1️⃣ PC ↔ 스마트폰 학습 진도 코드로 즉시 이어하기 (서버 없이 사용 시)</h4>
+        <p style="font-size:0.82rem; color:var(--text-secondary); margin:4px 0 8px;">
+          인터넷이 없는 PC나 스마트폰 사이에서 <b>[진도 코드 복사]</b> 후 카카오톡/메모장으로 전달해 붙여넣으면 체크한 암기 상태(외웠음/헷갈림/못외움)가 그대로 이어집니다.
+        </p>
+        <textarea class="modal-textarea" id="syncCodeArea" placeholder="여기에 진도 코드가 생성되거나, 복사한 코드를 붙여넣으세요."></textarea>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn-primary" id="btnCopySyncCode">📋 현재 진도 코드 복사</button>
+          <button class="icon-btn" id="btnApplySyncCode">📥 붙여넣은 코드로 복원</button>
+          <button class="icon-btn" id="btnExportJson">💾 파일(.json) 저장</button>
+          <label class="icon-btn" style="cursor:pointer;">
+            📂 파일 불러오기 <input type="file" id="inputImportJson" accept=".json" style="display:none;" />
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <h4>2️⃣ 옵시디언 원본 마크다운(.md) 수정 시 반영 방법</h4>
+        <p style="font-size:0.82rem; color:var(--text-secondary); margin:4px 0 8px;">
+          • <b>방법 A (자동 동기화):</b> 폴더 내 <code>옵시디언_동기화.bat</code> 파일을 더블클릭하면 옵시디언 볼트의 3개 파일이 즉시 이 웹앱에 업데이트됩니다.<br/>
+          • <b>방법 B (브라우저에서 직접 열기):</b> 아래 버튼으로 수정된 <code>.md</code> 파일을 직접 선택해 즉시 반영할 수도 있습니다.
+        </p>
+        <label class="btn-primary" style="display:inline-block; cursor:pointer;">
+          📄 옵시디언 .md 파일 직접 불러오기 (다중 선택 가능)
+          <input type="file" id="inputMdFiles" accept=".md" multiple style="display:none;" />
+        </label>
+      </div>
+
+      <div class="modal-section">
+        <h4>3️⃣ 현재 과목 암기 상태 초기화</h4>
+        <button class="icon-btn" id="btnResetProgress" style="color:var(--accent-red);">🗑️ 현재 과목 체크 기록 초기화</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.STUDY_DATA = {
+  "updatedAt": "2026-10-28T13:27:33.354Z",
+  "civil": [
+    {
+      "id": "civil-1",
+      "subject": "civil",
+      "num": 1,
+      "category": "민법총칙",
+      "title": "원시취득",
+      "codeText": "**신축**건물을 **선의**로 **취득**해서 **선점**하려다 보니 **부채**가 생겼다.",
+      "detailText": "- **신축건물**의 소유권 취득\n- **취득**시효\n- **선의**취득\n- 무주물 **선점** · 유실물 습득 · 매장물 발견\n- **부**합 · 혼화 · 가공\n- 매매로 인한 **채**권 취득"
+    },
+    {
+      "id": "civil-2",
+      "subject": "civil",
+      "num": 2,
+      "category": "민법총칙",
+      "title": "상대방 있는 단독행위",
+      "codeText": "**동철**이가 **상추**먹고 **취**해서 **채권도 포기**하고 **제한물권도 포기**하고 **수권행위**도 해줬다.",
+      "detailText": "- **동**의, **철**회, **상**계, **추**인, **취**소, **해**제, **해**지, **채권포기**, **제한물권의 포기**, **공유지분의 포기**, **취득시효이익의 포기**, **수권행위**"
+    },
+    {
+      "id": "civil-3",
+      "subject": "civil",
+      "num": 3,
+      "category": "민법총칙",
+      "title": "준물권행위",
+      "codeText": "**양면지**에 적어서 외우자.",
+      "detailText": "- 채권**양**도\n- 채무**면**제\n- **지**식재산권의 양도"
+    },
+    {
+      "id": "civil-4",
+      "subject": "civil",
+      "num": 4,
+      "category": "민법총칙",
+      "title": "특별효력요건",
+      "codeText": "**대리권**을 주면서 **조건**을 갖춰 **기한** 내에 **허가**하라고 했는데 **사망**해 버렸다.",
+      "detailText": "1. 대리에 있어서의 **대리권**의 존재\n2. 조건부·기한부 법률행위에 있어서의 **조건**의 성취 · **기한**의 도래\n3. 유언에 있어서의 유언자의 **사망**\n4. 토지거래허가구역 내의 토지거래계약에 있어서의 관할관청의 **허가**"
+    },
+    {
+      "id": "civil-5",
+      "subject": "civil",
+      "num": 5,
+      "category": "민법총칙",
+      "title": "단속법규",
+      "codeText": "**중개사**가 **직접** **주택**의 **전매**를 **일임**받고 **무허가**업자와 **특별조치**를 하다가 **단속**에 걸렸다.",
+      "detailText": "1. **무허가** · 무신고 · 무검사 영업을 금지하는 규정\n2. 중간생략등기를 금지하는 「부동산등기**특별조치**법」 관련 규정\n3. 투자**일임**매매를 제한하는 「자본시장과 금융투자업에 관한 법률」 관련 규정\n4. 「**주택**법」상의 **전매**금지규정\n5. 「공인중개사법」상 개업공인**중개사**가 중개의뢰인과 **직접** 거래를 하는 행위를 금지하는 「공인중개사법」 관련 규정"
+    },
+    {
+      "id": "civil-6",
+      "subject": "civil",
+      "num": 6,
+      "category": "민법총칙",
+      "title": "발신주의를 취하는 경우",
+      "codeText": "**제사**에 **무채**를 올려놓으면 **격**이 떨어진다.",
+      "detailText": "1. **제**한능력자의 상대방의 확답촉구에 대한 제한능력자 측의 확답\n2. **사**원총회의 소집통지\n3. **무**권대리인의 상대방의 최고에 대한 본인의 확답\n4. **채**무인수에 있어서 채무자 또는 인수인의 최고에 대한 채권자의 확답\n5. **격**지자 간의 계약성립에 있어서 승낙의 통지"
+    },
+    {
+      "id": "civil-7",
+      "subject": "civil",
+      "num": 7,
+      "category": "민법총칙",
+      "title": "비진의표시 제107조",
+      "codeText": "**비유알알무선**",
+      "detailText": "1. **비**진의표시는 원칙적으로 **유**효하다.\n2. 상대방이 표의자의 진의 아님을 **알**았거나 **알** 수 있었을 경우에는 **무**효로 한다.\n3. 무효로써 **선**의의 제3자에게 대항하지 못한다."
+    },
+    {
+      "id": "civil-8",
+      "subject": "civil",
+      "num": 8,
+      "category": "민법총칙",
+      "title": "통정허위표시 제108조",
+      "codeText": "**통정무선**",
+      "detailText": "1. 상대방과 **통정**한 허위의 의사표시는 **무**효이다.\n2. 무효로써 **선**의의 제3자에게 대항하지 못한다."
+    },
+    {
+      "id": "civil-9",
+      "subject": "civil",
+      "num": 9,
+      "category": "민법총칙",
+      "title": "착오에 의한 의사표시 제109조",
+      "codeText": "**내중착중무선**",
+      "detailText": "1. **내**용의 **중**요부분에 **착**오가 있을 것\n2. **중**대한 과실이 **무**을 것 (없을 것)\n3. 취소로써 **선**의의 제3자에게 대항하지 못한다."
+    },
+    {
+      "id": "civil-10",
+      "subject": "civil",
+      "num": 10,
+      "category": "민법총칙",
+      "title": "사기·강박에 의한 의사표시 제110조",
+      "codeText": "**사강취선**",
+      "detailText": "1. **사**기나 **강**박에 의한 의사표시는 **취**소할 수 있다.\n2. 취소로써 **선**의의 제3자에게 대항하지 못한다."
+    },
+    {
+      "id": "civil-11",
+      "subject": "civil",
+      "num": 11,
+      "category": "민법총칙",
+      "title": "수권행위 해석에 대한 보충규정 제118조",
+      "codeText": "**보이개**",
+      "detailText": "1. 권한을 정하지 아니한 대리인은 **보**존행위와 **이**용행위 및 **개**량행위만 할 수 있다.\n2. 보존행위는 제한 없이 할 수 있다.\n3. 이용·개량행위는 대리의 목적인 물건이나 권리의 성질이 변하지 아니하는 범위에서만 할 수 있다."
+    },
+    {
+      "id": "civil-12",
+      "subject": "civil",
+      "num": 12,
+      "category": "민법총칙",
+      "title": "자기계약과 쌍방대리",
+      "codeText": "**허채**",
+      "detailText": "1. 자기계약과 쌍방대리는 원칙적으로 금지된다.\n2. 본인의 **허**락이 있는 경우와 **채**무의 이행에 대해서는 예외적으로 자기계약과 쌍방대리가 허용된다."
+    },
+    {
+      "id": "civil-13",
+      "subject": "civil",
+      "num": 13,
+      "category": "민법총칙",
+      "title": "대리권 소멸사유",
+      "codeText": "**본사대성파**",
+      "detailText": "1. **본**인의 **사**망\n2. **대**리인의 사망\n3. **성**년후견의 개시\n4. **파**산"
+    },
+    {
+      "id": "civil-14",
+      "subject": "civil",
+      "num": 14,
+      "category": "민법총칙",
+      "title": "복대리인",
+      "codeText": "**대범내가 자이랑 선본대.**",
+      "detailText": "1. **대**리인이\n2. 대리권의 **범**위 **내**에서\n3. **자**신의 **이**름으로\n4. **선**임한\n5. **본**인의 **대**리인\n\n한 문장으로 쓰면, 복대리인은 **대리인이 대리권의 범위 내에서 자신의 이름으로 선임한 본인의 대리인**이다."
+    },
+    {
+      "id": "civil-15",
+      "subject": "civil",
+      "num": 15,
+      "category": "민법총칙",
+      "title": "임의대리인이 복임행위를 할 수 있는 경우",
+      "codeText": "**승부**",
+      "detailText": "1. 본인의 **승**낙이 있는 경우\n2. **부**득이한 사유가 있는 경우"
+    },
+    {
+      "id": "civil-16",
+      "subject": "civil",
+      "num": 16,
+      "category": "민법총칙",
+      "title": "무권대리행위의 상대방의 최고",
+      "codeText": "**무발거**",
+      "detailText": "**무**권대리의 경우에는 **발**신주의를 취하고, 확답을 하지 아니한 때에는 추인을 **거**절한 것으로 본다."
+    },
+    {
+      "id": "civil-17",
+      "subject": "civil",
+      "num": 17,
+      "category": "민법총칙",
+      "title": "제126조의 권한을 넘은 표현대리의 요건",
+      "codeText": "**기월정**",
+      "detailText": "1. **기**본대리권이 있을 것\n2. **월**권행위가 있을 것\n3. 상대방에게 **정**당한 이유가 있을 것"
+    },
+    {
+      "id": "civil-18",
+      "subject": "civil",
+      "num": 18,
+      "category": "민법총칙",
+      "title": "법률행위의 취소권자",
+      "codeText": "취소는 **제착사**에 있는 **강대승**만 할 수 있다.",
+      "detailText": "취소할 수 있는 법률행위는 **제**한능력자, **착**오로 인하거나 **사**기 · **강**박에 의하여 의사표시를 한 자, 그의 **대**리인 또는 **승**계인만이 취소할 수 있다."
+    },
+    {
+      "id": "civil-19",
+      "subject": "civil",
+      "num": 19,
+      "category": "민법총칙",
+      "title": "조건부 법률행위",
+      "codeText": "1. **불정무**\n2. **기해무**\n3. **처상보담**",
+      "detailText": "1. **불**능조건이 **정**지조건이면 그 법률행위는 **무**효이고, 불능조건이 해제조건이면 조건 없는 법률행위로 된다.\n2. **기**성조건이 **해**제조건이면 그 법률행위는 **무**효이고, 기성조건이 정지조건이면 조건 없는 법률행위로 된다.\n3. 조건부 권리 실현방법: **처**분, **상**속, **보**존, **담**보"
+    },
+    {
+      "id": "civil-20",
+      "subject": "civil",
+      "num": 20,
+      "category": "물권법",
+      "title": "관습법상의 물권이 아닌 경우",
+      "codeText": "**온사근미**",
+      "detailText": "1. **온**천권\n2. **사**도통행권\n3. **근**린공원이용권\n4. **미**등기매수인의 법적 지위"
+    },
+    {
+      "id": "civil-21",
+      "subject": "civil",
+      "num": 21,
+      "category": "물권법",
+      "title": "법률규정에 의한 부동산물권변동",
+      "codeText": "**상공판경**",
+      "detailText": "**상**속, **공**용징수, **판**결, **경**매"
+    },
+    {
+      "id": "civil-22",
+      "subject": "civil",
+      "num": 22,
+      "category": "물권법",
+      "title": "본등기의 효력",
+      "codeText": "**권대순정**",
+      "detailText": "1. **권**리변동적 효력(창설적 효력)\n2. **대**항적 효력\n3. **순**위확정적 효력: 등기의 순서에 따라 물권의 순위가 결정된다.\n4. 추**정**적 효력"
+    },
+    {
+      "id": "civil-23",
+      "subject": "civil",
+      "num": 23,
+      "category": "물권법",
+      "title": "물권의 공통된 소멸 원인",
+      "codeText": "**공포몰**에 가니 **혼**이 **소멸**했다.",
+      "detailText": "목적물의 **멸**실, **소멸**시효, **포**기, **혼**동, **공**용징수, **몰**수"
+    },
+    {
+      "id": "civil-24",
+      "subject": "civil",
+      "num": 24,
+      "category": "물권법",
+      "title": "점유권의 보호 내용",
+      "codeText": "**유리**를 깬 **과실**이 **현존**하니 **비용**을 **물자**.",
+      "detailText": "1. **유리**한 점유로 봐준다.\n2. **과실**을 취득할 수 있다.\n3. **현존**이익 한도에서 반환하면 된다.\n4. **비용**상환청구할 수 있다.\n5. **물**권적 청구권을 행사할 수 있다.\n6. **자**력구제할 수 있다."
+    },
+    {
+      "id": "civil-25",
+      "subject": "civil",
+      "num": 25,
+      "category": "물권법",
+      "title": "취득시효 완성 전·후에 소유권을 취득한 제3자에 대한 취득시효 주장",
+      "codeText": "**전돼후꽝**",
+      "detailText": "1. 취득시효 완성 **전**에 목적부동산의 소유권을 취득한 제3자에 대해서는 취득시효 주장이 **된다(돼)**.\n2. 취득시효 완성 **후**에 목적부동산의 소유권을 취득한 제3자에 대해서는 원칙적으로 취득시효 주장이 **꽝**(인정되지 않는다)."
+    },
+    {
+      "id": "civil-26",
+      "subject": "civil",
+      "num": 26,
+      "category": "물권법",
+      "title": "시효취득되는 권리",
+      "codeText": "1. **소지지전질**\n2. **점유가저형**",
+      "detailText": "1. 취득시효를 통하여 취득할 수 있는 권리: **소**유권, **지**상권, **지**역권(계속되고 표현된 것에 한함), **전**세권, **질**권\n2. 취득시효를 통하여 취득할 수 없는 권리: **점유**권, **유**치권, **가**족법상의 권리(부양청구권 등), **저**당권, **형**성권(취소권, 해제권 등)"
+    },
+    {
+      "id": "civil-27",
+      "subject": "civil",
+      "num": 27,
+      "category": "물권법",
+      "title": "관습법상 법정지상권 성립요건: 매매 기타 사유",
+      "codeText": "부모가 **대물변제**로 받은 **귀속재산**을 자식에게 주었는데, 자식들은 받자마자 **분할**해서 첫째는 **매매**로 날려먹고, 둘째는 **증여**로 날려먹고, 셋째는 **강제경매**로 날려먹고, 넷째는 **공매**로 날려먹었다.",
+      "detailText": "- **대물변제**\n- **귀속재산**의 불하\n- 공유물**분할**\n- **매매**\n- **증여**\n- 통상의 강제집행(**강제경매**)\n- 「국세징수법」상의 **공매**"
+    },
+    {
+      "id": "civil-28",
+      "subject": "civil",
+      "num": 28,
+      "category": "물권법",
+      "title": "지역권",
+      "codeText": "**취득**은 쉽게, **소멸**은 어렵게.",
+      "detailText": "1. 지역권의 **취득**\n   - 공유자의 1인이 지역권을 취득한 때에는 다른 공유자도 이를 취득한다.\n   - 점유로 인한 지역권 취득기간의 중단은 지역권을 행사하는 모든 공유자에 대한 사유가 아니면 그 효력이 없다.\n2. 지역권의 **소멸**\n   - 요역지가 수인의 공유인 경우에 그 1인에 의한 지역권 소멸시효의 중단 또는 정지는 다른 공유자를 위하여 효력이 있다."
+    },
+    {
+      "id": "civil-29",
+      "subject": "civil",
+      "num": 29,
+      "category": "물권법",
+      "title": "유치권의 성립요건",
+      "codeText": "**타인**의 **적법**한 **채권**의 **변제기**를 **배제**하는 일은 **없어야** 한다.",
+      "detailText": "1. **타인**의 물건이나 유가증권일 것\n2. 목적물에 대한 점유가 **적법**할 것\n3. **채권**과 목적물 사이에 견련성이 있을 것\n4. 채권의 **변제기**가 도래할 것\n5. 유치권 **배제**의 특약이 **없어야** 할 것"
+    },
+    {
+      "id": "civil-30",
+      "subject": "civil",
+      "num": 30,
+      "category": "물권법",
+      "title": "채권과 목적물 사이에 견련성이 인정되지 않는 경우",
+      "codeText": "이걸 안 외워서 시험에 떨어지면 **보권**(복권)을 **매**일 **사**야 한다.",
+      "detailText": "1. **보**증금반환청구권\n2. **권**리금반환청구권\n3. **매**매대금채권\n4. **사**람의 배신행위로 인한 손해배상청구권"
+    },
+    {
+      "id": "civil-31",
+      "subject": "civil",
+      "num": 31,
+      "category": "물권법",
+      "title": "공동저당과 법정지상권",
+      "codeText": "**공신** X",
+      "detailText": "**공**동저당권이 설정이 되었다가 건물이 **신**축된 경우에는 원칙적으로 법정지상권이 인정되지 **아니한다(X)**."
+    },
+    {
+      "id": "civil-32",
+      "subject": "civil",
+      "num": 32,
+      "category": "민법총칙",
+      "title": "요식행위",
+      "codeText": "**요식**아니가 **혼인**만하면 **법인**도 **설립**해 주고 **어음**·**수표**도 주겠다는게 나의 **유언**이다. 알겠냐 **등신**아?",
+      "detailText": "1. **혼인** · 이혼 · 인지 · 입양\n2. **설립**행위 (법인설립)\n3. **어음**행위 · **수표**행위\n4. **유언**\n5. **등**기**신**청"
+    },
+    {
+      "id": "civil-33",
+      "subject": "civil",
+      "num": 33,
+      "category": "계약법",
+      "title": "동시이행 항변권: 동일성이 유지되는 경우",
+      "codeText": "**채양**이와 **채인**이가 **상속**을 받아서 **전부** 똑같은 **이불**을 샀다.",
+      "detailText": "**채**권**양**도, **채**무**인**수, **상속**, **전부**명령, **이**행**불**능의 경우에는 당사자나 채무가 변경이 되어도 동일성이 유지되므로 동시이행의 항변권이 인정된다."
+    },
+    {
+      "id": "civil-34",
+      "subject": "civil",
+      "num": 34,
+      "category": "계약법",
+      "title": "최고 없이 해제할 수 있는 경우",
+      "codeText": "정불미 특으로 보내주세요.",
+      "detailText": "1) 정기행위의 이행지체 : 해제의 의사표시는 해야 함(자동해제 x)\n2) 이행불능과 추완이 불가능한 불완전이행\n3) 채무자가 밀 이행하지 아니할 의사를 표시한 경우\n4) 최고배제의 특약이 있는 경우"
+    },
+    {
+      "id": "civil-35",
+      "subject": "civil",
+      "num": 35,
+      "category": "계약법",
+      "title": "매도인의 담보책임",
+      "codeText": "**전일수용저특종**, **대해손** (모양: **ㄱ · ㄱ · ㅡ · ㅡ · ㅁ · ㅡ · ㅡ** / 제척기간: **X · 1년 · X · 6개월**)",
+      "detailText": "원본은 도표이다. 글과 표로 옮기면 아래와 같다.\n\n### 📊 매도인의 담보책임 한눈에 보는 도표 (원본 이미지 완벽 구현)\n\n| 하자 유형 (`전일수용저특종`) | 매수인 | 대금감액 | 해제 | 손해배상 | 도형 모양 | 제척기간 |\n| :--- | :---: | :---: | :---: | :---: | :---: | :---: |\n| **전**부타인권리 | **선의** | - | **⭕** | **⭕** | **『 ㄱ 』** | **X (없음)** |\n| 〃 | **악의** | - | **⭕** | - | 〃 | **X (없음)** |\n| **일**부타인권리 | **선의** | **⭕** | **⭕** | **⭕** | **『 ㄱ 』** | **1년** (안 날부터) |\n| 〃 | **악의** | **⭕** | - | - | 〃 | **1년** (계약한 날부터) |\n| **수**량부족 · 일부멸실 | **선의** | **⭕** | **⭕** | **⭕** | **『 ㅡ 』** | **1년** (안 날부터) |\n| 〃 | **악의** | - | - | - | - | - |\n| **용**익권의 제한 | **선의** | - | **⭕** | **⭕** | **『 ㅡ 』** | **1년** (안 날부터) |\n| 〃 | **악의** | - | - | - | - | - |\n| **저**당권실행에 의한 제한 | **선의** | - | **⭕** | **⭕** | **『 ㅁ 』** | **X (없음)** |\n| 〃 | **악의** | - | **⭕** | **⭕** | 〃 | **X (없음)** |\n| **특**정물매매 | **선의무과실** | - | **⭕** | **⭕** | **『 ㅡ 』** | **6개월** (안 날부터) |\n| 〃 | **악의** | - | - | - | - | - |\n| **종**류물매매 *(+완전물급부청구권)* | **선의무과실** | *(완전물급부)* | **⭕** | **⭕** | **『 ㅡ 』** | **6개월** (안 날부터) |\n| 〃 | **악의** | - | - | - | - | - |\n\n### 하자의 유형 — 전일수용저특종\n\n| 코드 | 의미 |\n| :--- | :--- |\n| **전** | 권리가 **전**부 타인에게 속한 경우 |\n| **일** | 권리의 **일**부가 타인에게 속한 경우 |\n| **수** | **수**량부족 · 일부멸실 |\n| **용** | **용**익권에 의한 제한 |\n| **저** | **저**당권 · 전세권 등의 행사 |\n| **특** | **특**정물의 하자 |\n| **종** | **종**류물의 하자 |\n\n### 구제수단 — 대해손\n\n- **대**금감액청구권\n- **해**제\n- **손**해배상청구권\n- 종류물 하자에는 추가로 **완전물급부청구권**\n\n### 제척기간 · 행사방법\n\n- 권리의 하자: **전부타인권리(X)** / **일·수·용(1년)** / **저당권실행(X)**\n- 물건의 하자(특·종): **6개월**\n- 기산점\n  - **선의:** 하자를 안 날\n  - **악의:** 계약한 날\n- 행사방법: **재판상 + 재판외**"
+    },
+    {
+      "id": "civil-36",
+      "subject": "civil",
+      "num": 36,
+      "category": "계약법",
+      "title": "임대인의 권리",
+      "codeText": "**차반**",
+      "detailText": "1. **차**임지급청구권\n2. 목적물**반**환청구권"
+    },
+    {
+      "id": "civil-37",
+      "subject": "civil",
+      "num": 37,
+      "category": "계약법",
+      "title": "임대인의 의무",
+      "codeText": "**목방수비담**",
+      "detailText": "1. **목**적물인도의무\n2. **방**해제거의무\n3. **수**선의무\n4. **비**용상환의무\n5. **담**보책임"
+    },
+    {
+      "id": "civil-38",
+      "subject": "civil",
+      "num": 38,
+      "category": "계약법",
+      "title": "임차인의 권리",
+      "codeText": "**임비갱매차**",
+      "detailText": "1. **임**차권\n2. **비**용상환청구권\n3. **갱**신청구권\n4. **매**수청구권\n5. **차**임감액청구권"
+    },
+    {
+      "id": "civil-39",
+      "subject": "civil",
+      "num": 39,
+      "category": "계약법",
+      "title": "임차인의 의무",
+      "codeText": "**차보반**",
+      "detailText": "1. **차**임지급의무\n2. 목적물**보**관의무\n3. 목적물**반**환의무"
+    },
+    {
+      "id": "civil-40",
+      "subject": "civil",
+      "num": 40,
+      "category": "계약법",
+      "title": "임대차에서 임의규정인 것들",
+      "codeText": "**수비양**",
+      "detailText": "1. **수**선의무\n2. **비**용상환청구권\n3. 임차권**양**도 · 전대의 제한"
+    },
+    {
+      "id": "civil-41",
+      "subject": "civil",
+      "num": 41,
+      "category": "계약법",
+      "title": "무단양도·전대행위가 임대인에 대한 배신행위가 되지 않는 경우",
+      "codeText": "**부부 경락**",
+      "detailText": "1. **부부:** 임차권을 무단으로 양도한 경우라도, 임차권의 양수인이 임차인과 부부로서 임차건물에 동거하면서 함께 가구점을 경영하고 있는 경우에는 임대인은 임대차계약을 해지할 수 없다.\n2. **경락:** 건물의 소유를 목적으로 토지를 임차한 자가 건물을 신축한 후 그 건물에 저당권을 설정한 경우, 건물저당권이 실행되어 경락인이 건물소유권과 함께 토지임차권을 취득한 때에는 임대인은 자신의 동의 없이 임차권이 이전되었다는 것만을 이유로 임대차계약을 해지할 수 없다."
+    },
+    {
+      "id": "civil-42",
+      "subject": "civil",
+      "num": 42,
+      "category": "민사특별법",
+      "title": "「상가건물 임대차보호법」의 적용을 받기 위한 보증금의 범위",
+      "codeText": "「상가건물 임대차보호법」의 적용을 받는지 알아보려면 **969-5437**로 전화하면 된다.",
+      "detailText": "| 지역 | 환산보증금 |\n| :--- | :--- |\n| 서울특별시 | **9**억원 이하 |\n| 수도권 과밀억제권역 및 부산광역시 | **6**억 **9**천만원 이하 |\n| 광역시 등 | **5**억 **4**천만원 이하 |\n| 기타 | **3**억 **7**천만원 이하 |"
+    },
+    {
+      "id": "civil-43",
+      "subject": "civil",
+      "num": 43,
+      "category": "민사특별법",
+      "title": "「가등기담보 등에 관한 법률」의 적용을 받기 위한 전제조건",
+      "codeText": "가등기담보법이 적용되는지 알아보려면 **공초**를 피면서 **담소**를 나눠보면 된다.",
+      "detailText": "1. 목적물이 **공**시할 수 있을 것\n2. 예약 당시의 가액이 차용액과 이자의 합산액을 **초**과할 것\n3. **담**보목적의 계약이 있을 것\n4. **소**비대차에 기한 채권일 것"
+    },
+    {
+      "id": "civil-44",
+      "subject": "civil",
+      "num": 44,
+      "category": "민사특별법",
+      "title": "권리취득에 의한 실행 순서",
+      "codeText": "**변기통청청소**",
+      "detailText": "**변**제**기** 도래 → 실행**통**지 → **청**산기간(2개월) 경과 → **청**산금 지급 → **소**유권취득"
+    },
+    {
+      "id": "civil-45",
+      "subject": "civil",
+      "num": 45,
+      "category": "민사특별법",
+      "title": "「부동산 실권리자명의 등기에 관한 법률」의 적용범위",
+      "codeText": "**[적용 제외]** **양가상신**\n**[적용 특례]** **종종배**",
+      "detailText": "### 적용 제외\n「부동산 실권리자명의 등기에 관한 법률」 자체가 전혀 적용되지 않는다.\n\n1. **양**도담보\n2. **가**등기담보\n3. **상**호명의신탁(구분소유적 공유)\n4. 「**신**탁법」상의 신탁\n\n### 적용 특례\n\n탈법목적이 없는 경우에는 유효하다.\n\n1. **종**중 → 종중원 명의로 등기\n2. **종**교단체의 산하조직 → 종교단체의 명의로 등기\n3. **배**우자"
+    },
+    {
+      "id": "civil-46",
+      "subject": "civil",
+      "num": 46,
+      "category": "민법총칙",
+      "title": "법률행위의 목적",
+      "codeText": "확가적사",
+      "detailText": "확정성, 가능성, 적법성, 사회적 타당성"
+    },
+    {
+      "id": "civil-47",
+      "subject": "civil",
+      "num": 47,
+      "category": "민법총칙",
+      "title": "권리의 상대적 소멸",
+      "codeText": "이주상",
+      "detailText": "이전적 승계 = 주체의 변경 = 상대적 소멸"
+    },
+    {
+      "id": "civil-48",
+      "subject": "civil",
+      "num": 48,
+      "category": "민사특별법",
+      "title": "상임법의 보증금제한",
+      "codeText": "코로나로 폐업한 임차인이 권리금을 달라고 하자 임대인은 계약을 해지했다",
+      "detailText": "환산보증금이 969-5437 초과하더라도 인정되는 것들 -> 대항력, 계약갱신요구권, 차임연체와 해지, 권리금보호, 표준권리금계약서 작성, 감염병(코로나) 예장을 위한 집합제한 조치에 따른 폐업으로 인한 해지권"
+    },
+    {
+      "id": "civil-49",
+      "subject": "civil",
+      "num": 49,
+      "category": "민법총칙",
+      "title": "비정상적 의사표시",
+      "codeText": "비통착 사기강박",
+      "detailText": "불일치 - 비진의 표시/통정허위표시/착오, 하자 있는 의사표시 -사기.강박"
+    },
+    {
+      "id": "civil-50",
+      "subject": "civil",
+      "num": 50,
+      "category": "민법총칙",
+      "title": "통정허위표시 의미",
+      "codeText": "도도합",
+      "detailText": "의사와 표시가 불일치하는 것을 표의자도 알고 상대방도 알면서 외관창출에 대하여 합의(양해)가 있는 경우"
+    },
+    {
+      "id": "civil-51",
+      "subject": "civil",
+      "num": 51,
+      "category": "민법총칙",
+      "title": "계약의 무권대리 : 상대방의 철회권",
+      "codeText": "선철",
+      "detailText": "철회는 선의의 상대방만 할 수 있고, 악의 상대방은 할 수 없다."
+    },
+    {
+      "id": "civil-52",
+      "subject": "civil",
+      "num": 52,
+      "category": "민법총칙",
+      "title": "일부무효의 법리",
+      "codeText": "가가",
+      "detailText": "법률행위의 일부분이 무효인 때에는 전부무효가 원칙이다. 그러나 가분성과 가상적 의사가 있으면 나머지 부분은 유효로 될 수 있다."
+    },
+    {
+      "id": "civil-53",
+      "subject": "civil",
+      "num": 53,
+      "category": "민법총칙",
+      "title": "법정추인의 사유",
+      "codeText": "전이경 담양강",
+      "detailText": "전부나 일부의 이행, 이행청구, 경개, 담보제공, 양도, 강제집행"
+    },
+    {
+      "id": "civil-54",
+      "subject": "civil",
+      "num": 54,
+      "category": "민법총칙",
+      "title": "기한의 이익",
+      "codeText": "ㅊㅊ",
+      "detailText": "기한의 이익이 누구에게 있는지 불분명한 경우 기한은 채무자의 이익을 위한 것으로 추정한다."
+    },
+    {
+      "id": "civil-55",
+      "subject": "civil",
+      "num": 55,
+      "category": "물권법",
+      "title": "등기의 내용에따른 분류",
+      "codeText": "기경변말회멸",
+      "detailText": "기입등기, 경정등기, 변경등기, 말소등기, 말소회복등기, 멸실등기"
+    },
+    {
+      "id": "civil-56",
+      "subject": "civil",
+      "num": 56,
+      "category": "물권법",
+      "title": "점유자의 과실취득권 효과 & 점유자의 비용상환청구권",
+      "codeText": "통필",
+      "detailText": "1) 선의 점유자가 과실을 취득한 경우 통상의 필요비는 청구할 수 없다. (악의의 점유자는 과실을 취득할 수 없으므로 통상의 필요비를 청구할 수 있음)\n2) 점유자가 점유물을 반환할 때에는 회복자에 대하여 점유물을 보존하기 위하여 지출한 금액 기타 필요비의 상환을 청구할 수 있다. 그러나 점유자가 과실을 취득한 경우에는 통상의 필요비는 청구하지 못한다."
+    },
+    {
+      "id": "civil-57",
+      "subject": "civil",
+      "num": 57,
+      "category": "물권법",
+      "title": "점유물의 멸실. 훼손에 대한 책임",
+      "codeText": "선자",
+      "detailText": "점유물이 점유자의 책임 있는 사유로 인하여 멸실 또는 훼손한 때에는 선의 자주점유자는 현존이익 한도내에서만 배상하면 되고, 그 이외의 자는 손해의 전부를 배상하여야 한다."
+    },
+    {
+      "id": "civil-58",
+      "subject": "civil",
+      "num": 58,
+      "category": "물권법",
+      "title": "담보물권의 물상대위성",
+      "codeText": "우물",
+      "detailText": "우선변제권이 있는 질권과 저당권에만 물상대위성이 인정된다."
+    },
+    {
+      "id": "civil-59",
+      "subject": "civil",
+      "num": 59,
+      "category": "물권법",
+      "title": "근저당권을 말소시키기 위하여 변제하여야 할 금액의 범위",
+      "codeText": "무겸설 전액, 무3 최고액",
+      "detailText": "1) 채무자 겸 근저당권설정자 -> 전액 변제\n2) 물상보증인, 제3취득자 -> 최고액만 변제"
+    },
+    {
+      "id": "civil-60",
+      "subject": "civil",
+      "num": 60,
+      "category": "계약법",
+      "title": "전형계약",
+      "codeText": "조종화가 증여로 차차차 받아서 매매한 후 고도로 여행하고 교환원에 위임하는 현상을 전형계약이다.",
+      "detailText": "조합, 종신정기금, 화해, 증여, 소비대차, 사용대차, 임대차, 매매, 교환, 고용, 도급, 여행, 교환, 위임, 임치, 현상광고"
+    },
+    {
+      "id": "civil-61",
+      "subject": "civil",
+      "num": 61,
+      "category": "계약법",
+      "title": "요물계약",
+      "codeText": "현대계보",
+      "detailText": "현상광고, 대물변제, 계약금계약, 보증금계약"
+    },
+    {
+      "id": "civil-62",
+      "subject": "civil",
+      "num": 62,
+      "category": "계약법",
+      "title": "계약의 성립시기",
+      "codeText": "대승도 격승발",
+      "detailText": "1) 대화자 간의 계약은 승낙의 의사표시가 도달한 때에 성립한다.\n2) 격지자 간의 계약은 승낙의 통지를 발송한 때에 성립한다."
+    },
+    {
+      "id": "civil-63",
+      "subject": "civil",
+      "num": 63,
+      "category": "계약법",
+      "title": "물건의 하자",
+      "codeText": "장판물",
+      "detailText": "법률상 장애에 대해서 판례는 물건의 하자로 본다."
+    },
+    {
+      "id": "civil-64",
+      "subject": "civil",
+      "num": 64,
+      "category": "민사특별법",
+      "title": "구분소유자의 권리와 의무",
+      "codeText": "공일전",
+      "detailText": "전유부분과 **공**용부분에 대한 공유지분을 분리하여 처분할 수 없다(**일**체성). 공용부분의 공유지분은 **전**유부분의 처분에 따른다."
+    },
+    {
+      "id": "civil-65",
+      "subject": "civil",
+      "num": 65,
+      "category": "민사특별법",
+      "title": "임차권의 승계에서 상속인이 없을 시",
+      "codeText": "가사",
+      "detailText": "가정공동생활을 하던 사실상의 혼인관계에 있는 자"
+    }
+  ],
+  "intro_code": [
+    {
+      "id": "intro-code-1",
+      "subject": "intro_code",
+      "num": 1,
+      "category": "경제론",
+      "title": "시장균형의 변동",
+      "pageRef": "합P44",
+      "codeText": "다르면 큰 놈 따라간다\n같방가 반반량\n같방가 반방량",
+      "detailText": "1. 수요와 공급의 변화크기가 다르면, 큰 것만 고려할것\n2. 수요와 공급의 변화크기가 동일하면, 가격과 균형량 중 하나는 불편\n3. 수요와 공급의 변화크기가 주어지지 않을 경우 : 가격과 균형량 중 하나는 알 수 없음"
+    },
+    {
+      "id": "intro-code-2",
+      "subject": "intro_code",
+      "num": 2,
+      "category": "경제론",
+      "title": "탄력성과 균형의 이동",
+      "pageRef": "합P52",
+      "codeText": "비크탄작",
+      "detailText": "수요와 공급의 가격탄력성이 비탄력적일수록 크게\n수요와 공급의 가격탄력성이 탄력적일수록 작게"
+    },
+    {
+      "id": "intro-code-3",
+      "subject": "intro_code",
+      "num": 3,
+      "category": "경제론",
+      "title": "탄력성과 임대인의 총수입(임차인의 총지출)",
+      "pageRef": "",
+      "codeText": "단불 / 비같 / 탄반",
+      "detailText": "1. 단불(단위탄력적 = 1) : 가격(임대료)을 인상하든 인하하든 총수입(총지출)은 무조건 불변 (단, 가격 인상 시 수요량은 감소)\n2. 비같(비탄력적 < 1) : 가격(임대료)과 총수입(총지출)이 같은 방향으로 이동 (고가정책: 임대료 인상 -> 총수입 증가, 임대료 인하 -> 총수입 감소)\n3. 탄반(탄력적 > 1) : 가격(임대료)과 총수입(총지출)이 반대 방향으로 이동 (저가정책: 임대료 인상 -> 총수입 감소, 임대료 인하 -> 총수입 증가)"
+    },
+    {
+      "id": "intro-code-4",
+      "subject": "intro_code",
+      "num": 4,
+      "category": "총론",
+      "title": "한국표준산업분류상의 부동산업",
+      "pageRef": "합P12",
+      "codeText": "임개공\n관리중자감",
+      "detailText": "1. 부동산임대 및 공급업 \n   - 부동산 임대업 \n   - 부동산 개발 및 공급업\n2. 부동산 관련 서비스업 \n   - 부동산 관리업\n   - 부동산 중개, 자문 및 감정평가업 (+부동산 분양대행업)\n\n단, 부동산금융업(x)"
+    },
+    {
+      "id": "intro-code-5",
+      "subject": "intro_code",
+      "num": 5,
+      "category": "총론",
+      "title": "주택의 분류(건축법 시행령)",
+      "pageRef": "합P24",
+      "codeText": "단다다공\n아다연기",
+      "detailText": "1. 단독주택 : 단독주택, 다중주택, 다가구주택, 공관\n2. 공동주택 : 아파트(5개층 이상), 다세대주택, 연립주택(바닥면적 합계 660제곱미터 초과), 기숙사"
+    },
+    {
+      "id": "intro-code-6",
+      "subject": "intro_code",
+      "num": 6,
+      "category": "경제론",
+      "title": "부동산시장 불완전 경쟁시장(균형가격의 형성이 곤란)",
+      "pageRef": "합P29",
+      "codeText": "부부개",
+      "detailText": "부증성, 부동성, 개별성"
+    },
+    {
+      "id": "intro-code-7",
+      "subject": "intro_code",
+      "num": 7,
+      "category": "경제론",
+      "title": "수요변화의 비가격요인",
+      "pageRef": "",
+      "codeText": "소대예금인정",
+      "detailText": "소득수준의 변화\n대체재\n소비자의 가격예상\n대출금리\n소비자인구의 수\n정책"
+    },
+    {
+      "id": "intro-code-8",
+      "subject": "intro_code",
+      "num": 8,
+      "category": "경제론",
+      "title": "수요 증가의 요인",
+      "pageRef": "합P35",
+      "codeText": "대상보하",
+      "detailText": "대체재(대체주택)의 가격 상승\n보완재의 가격 하락"
+    },
+    {
+      "id": "intro-code-9",
+      "subject": "intro_code",
+      "num": 9,
+      "category": "경제론",
+      "title": "공급량의 변화와 공급의 변화",
+      "pageRef": "합P39",
+      "codeText": "가변량\n비변공",
+      "detailText": "공급량의 변화 : 해당 상품가격(임대료)의 변화에 의한 공급량의 변화를 말한다.\n공급의 변화 : 해당 상품가격(임대료) 이외의 요인이 변화하여 일어나는 공급량의 변화를 말한다."
+    },
+    {
+      "id": "intro-code-10",
+      "subject": "intro_code",
+      "num": 10,
+      "category": "경제론",
+      "title": "수요량의 변화와 수요의 변화",
+      "pageRef": "합P34",
+      "codeText": "가변량\n비변수",
+      "detailText": "가격변화 -> 수요량 변화 : 수요량의 변화\n비가격변화 -> 수요량 변화 : 수요의 변화"
+    },
+    {
+      "id": "intro-code-11",
+      "subject": "intro_code",
+      "num": 11,
+      "category": "경제론",
+      "title": "거미집이론(장기에 걸친 균형점의 이동)",
+      "pageRef": "P58",
+      "codeText": "수탄수\n공탄발",
+      "detailText": "수요의 가격탄력성 > 공급의 가격탄력성 : 수렴형\n수요의 가격탄력성 < 공급의 가격탄력성 : 발산형\n- 기울기 크기와 탄력성 크기는 반대 (동일한 균형점에서 비교, 세로축 P / 가로축 Q).\n- 가파르기 = 기울기 절대값.\n- Q함수(P 앞 계수의 절대값): 공급 > 수요 -> 공탄발, 수요 > 공급 -> 수탄수."
+    },
+    {
+      "id": "intro-code-12",
+      "subject": "intro_code",
+      "num": 12,
+      "category": "경제론",
+      "title": "거미집모형",
+      "pageRef": "P57",
+      "codeText": "상가나 공장에서 사는 거미는 동태를 좋아해",
+      "detailText": "동태모형, 상/공업용 부동산에 적용\n- 수요는 즉각적으로 영향을 받지만 공급량은 일정한 생산기간이 경과한 후에만 변동이 가능하다.\n- 미래의 공급결정은 현재의 가격에만 의존한다."
+    },
+    {
+      "id": "intro-code-13",
+      "subject": "intro_code",
+      "num": 13,
+      "category": "시장·입지론",
+      "title": "지대이론",
+      "pageRef": "",
+      "codeText": "탄전비경",
+      "detailText": "공급의 탄력성이 커지면 전용수입은 증가하고 경제지대는 감소한다.\n공급의 탄력성이 작아지면 전용수입은 감소하고 경제지대는 증가한다.\n공급이 완전탄력적이면 총수입은 모두 전용수입으로 구성된다\n공급이 완전비탄력적이면 총수입은 모두 경제지대로 구성된다"
+    },
+    {
+      "id": "intro-code-14",
+      "subject": "intro_code",
+      "num": 14,
+      "category": "시장·입지론",
+      "title": "차액지대설-리카도",
+      "pageRef": "P67",
+      "codeText": "비옥한 토지에서 수확하여 한계없이 처먹고 차액은 니카드로",
+      "detailText": "토지의 위치에 따라 비옥도의 차이가 생산성의 차이를 유발하여 지대 차이를 발생시킨다는 이론으로, 지대 발생의 원인으로 비옥도의 차이, 비옥한 토지량의 제한, 수확체감의 법칙을 제시하였다.\n'수확체감 현상'이란 생산요소 투입을 늘릴수록 한계생산성이 증가하는 것이 아니라 한계생산성이 점차 감소(체감)하는 현상입니다."
+    },
+    {
+      "id": "intro-code-15",
+      "subject": "intro_code",
+      "num": 15,
+      "category": "시장·입지론",
+      "title": "절대지대설-마르크스",
+      "pageRef": "P67",
+      "codeText": "절마는 사유화로 한계지에 지대발생",
+      "detailText": "한계지에도 토지소유자의 요구로 지대가 발생한다"
+    },
+    {
+      "id": "intro-code-16",
+      "subject": "intro_code",
+      "num": 16,
+      "category": "시장·입지론",
+      "title": "준지대설-마샬",
+      "pageRef": "P68",
+      "codeText": "준마 기계는 단기간 일시적",
+      "detailText": "준지대는 토지 이외의 고정생산요소에 귀속되는 소득으로서 단기간 일시적으로 발생한다.\n준지대는 단기에 고정되어 있는 생산요소(생산을 위하여 사람이 만든 기계와 기타 자본설비)로 인해 얻게 되는 지대이다."
+    },
+    {
+      "id": "intro-code-17",
+      "subject": "intro_code",
+      "num": 17,
+      "category": "시장·입지론",
+      "title": "위치지대설(입지교차지대설, 고립국이론)-튀네",
+      "pageRef": "P68",
+      "codeText": "거리가 멀수록 수송비가 많아 지대는 낮고 집약에서 조방으로 튀네",
+      "detailText": "지대란 생산물가격에서 생산비와 수송비를 뺀 것으로서, 수송비 절약이 곧 지대이다.\n튀넨의 고립국 이론은 상업활동이 아니라 중심지 시장과의 거리에 따른 농업활동(농업적 토지이용)의 공간적 분포를 설명한 이론입니다."
+    },
+    {
+      "id": "intro-code-18",
+      "subject": "intro_code",
+      "num": 18,
+      "category": "시장·입지론",
+      "title": "입찰지대설-알론소",
+      "pageRef": "P69",
+      "codeText": "입찰에서 높은지대내고 나면 남는게 없어 알론소리",
+      "detailText": "입찰지대란 단위면적의 토지에 대해 토지이용자가 지불하고자 하는 최대금액으로, 초과이윤이 '0'이 되는 수준의 지대를 말한다.\n도심으로부터의 거리에 따라 더 높은 지대를 지불할 수 있는 각 산업의 지대곡선들을 연결한 것을 입찰지대곡선이라 한다."
+    },
+    {
+      "id": "intro-code-19",
+      "subject": "intro_code",
+      "num": 19,
+      "category": "총론",
+      "title": "마찰비용이론-헤이그",
+      "pageRef": "",
+      "codeText": "헤이 그 마찰은 수지때문이야",
+      "detailText": "공간의 마찰비용은 지대와 교통비의 합이며, 토지는 고정되어 있으므로 교통비의 절약액이 지대라고 하였다. \n마찰비용 = 교통비(수송비) + 지대"
+    },
+    {
+      "id": "intro-code-20",
+      "subject": "intro_code",
+      "num": 20,
+      "category": "정책론",
+      "title": "부동산정책-시장의 실패 원인",
+      "pageRef": "P85",
+      "codeText": "불규외 공정",
+      "detailText": "불완전경쟁(독과점)의 존재\n규모의 경제\n외부효과의 존재\n공공재의 부족\n거래 쌍방간의 정보의 비대칭성 및 불확실성"
+    },
+    {
+      "id": "intro-code-21",
+      "subject": "intro_code",
+      "num": 21,
+      "category": "정책론",
+      "title": "현재 우리나라에서 시행하고 있지 않는 부동산제도",
+      "pageRef": "P85",
+      "codeText": "택토개",
+      "detailText": "택지소유상환제\n토지초과이득세\n개발권양도제"
+    },
+    {
+      "id": "intro-code-22",
+      "subject": "intro_code",
+      "num": 22,
+      "category": "시장·입지론",
+      "title": "도시공간구조이론-동심원이론-버제스",
+      "pageRef": "P71",
+      "codeText": "동심을 가진 버제스는 시카고에 사는 저소득층이지만 생태를 좋아해",
+      "detailText": "1. 도시의 공간구조를 도시생태학적 관점에서 접근하였다.\n2. 도시의 공간구조 형성을 침입, 경쟁, 천이 등의  과정으로 설명하였다.\n3. 주택지불능력이 낮은 저소득층일수록 고용기회가 많은 도심지역에 주거입지를 선정하는 경향이 있다."
+    },
+    {
+      "id": "intro-code-23",
+      "subject": "intro_code",
+      "num": 23,
+      "category": "시장·입지론",
+      "title": "도시공간구조이론-선형이론-호이트",
+      "pageRef": "P71",
+      "codeText": "고소득층이 선호하는 교통망은 부채꼴",
+      "detailText": "토지이용은 도심에서 시작되어 점차 교통망을 따라 동질적으로 확장되므로 부채꼴모양으로 도시가 성장한다."
+    },
+    {
+      "id": "intro-code-24",
+      "subject": "intro_code",
+      "num": 24,
+      "category": "시장·입지론",
+      "title": "도시공간구조이론-다핵심이론-해리스&올만",
+      "pageRef": "P72",
+      "codeText": "대도시에서 복수는 학자가 둘이면 다핵",
+      "detailText": "도시가 성장하면 핵심의 수가 증가하고 도시는 복수의 핵심 주변에서 발달한다. \n대도시에 적합한 이론\n몇개의 분리된 핵이 점진적으로 통합됨에 따라 전체적인 도시구조가 형성"
+    },
+    {
+      "id": "intro-code-25",
+      "subject": "intro_code",
+      "num": 25,
+      "category": "시장·입지론",
+      "title": "허프-확률적 상권모형",
+      "pageRef": "P78",
+      "codeText": "전문은 마찰이 작다",
+      "detailText": "공간마찰계수 : 전문품점이 일상용품점보다 작고, 교통조건이 나쁠수록 커진다."
+    },
+    {
+      "id": "intro-code-26",
+      "subject": "intro_code",
+      "num": 26,
+      "category": "투자론",
+      "title": "부동산투자의 위험",
+      "pageRef": "",
+      "codeText": "사금법인유",
+      "detailText": "사업상의 위험 : 시장, 운영, 위치적 위험\n금융적 위험\n법적 위험\n인플레이션 위험\n유동성 위험"
+    },
+    {
+      "id": "intro-code-27",
+      "subject": "intro_code",
+      "num": 27,
+      "category": "투자론",
+      "title": "영업의 현금흐름의 계산",
+      "pageRef": "",
+      "codeText": "총순전후 공경부세",
+      "detailText": "가능총소득\n- 공실 및 불량부채\n+ 기타 소득\n= 유효총소득\n- 영업경비\n= 순영업소득\n- 부채서비스액\n= 세전 현금 흐름\n- 영업소득세\n= 세후현금흐름"
+    },
+    {
+      "id": "intro-code-28",
+      "subject": "intro_code",
+      "num": 28,
+      "category": "투자론",
+      "title": "지분복귀액의 계산 (매도할 때 발생)",
+      "pageRef": "",
+      "codeText": "매순전후 경미세",
+      "detailText": "매도가격\n- 매도경비\n= 순매도액\n- 미상환 저당잔금\n= 세전지분복귀액\n- 자본 이득세\n= 세후지분복귀액"
+    },
+    {
+      "id": "intro-code-29",
+      "subject": "intro_code",
+      "num": 29,
+      "category": "투자론",
+      "title": "영업소득세의 계산",
+      "pageRef": "",
+      "codeText": "순대이감 세대원감",
+      "detailText": "1) 순영업소득\n+ 대체충당금\n- 이자지급액\n- 감가상각액\n= 과세소득 X 세율 = 영업소득세\n\n2) 세전현금흐름\n+대체충당금\n+ 원금상환액\n- 감가상각액\n= 과세소득 x 세율 = 영업소득세"
+    },
+    {
+      "id": "intro-code-30",
+      "subject": "intro_code",
+      "num": 30,
+      "category": "개발·관리론",
+      "title": "건물의 연수사이클",
+      "pageRef": "",
+      "codeText": "전신안노폐",
+      "detailText": "전개발단계\n신축단계\n안정단계\n노후단계\n완전폐물단계"
+    },
+    {
+      "id": "intro-code-31",
+      "subject": "intro_code",
+      "num": 31,
+      "category": "감정평가론",
+      "title": "정액법에 의한 적산가액 산정",
+      "pageRef": "",
+      "codeText": "재감경경내",
+      "detailText": "적산가액=재조달원가-(재조달원가 x 감가율 x 경과연수 / 경제적 내용연수)"
+    },
+    {
+      "id": "intro-code-32",
+      "subject": "intro_code",
+      "num": 32,
+      "category": "감정평가론",
+      "title": "거래사례비교법",
+      "pageRef": "합P180",
+      "codeText": "사시지개면",
+      "detailText": "비준가액 = 사례가액 x 사정보정치 x 시점수정치 x 지역요인 비교치 x 개별요인 비교치 x 면적)"
+    },
+    {
+      "id": "intro-code-33",
+      "subject": "intro_code",
+      "num": 33,
+      "category": "감정평가론",
+      "title": "공시지가기준법에 따른 감정평가순서",
+      "pageRef": "",
+      "codeText": "시지개그",
+      "detailText": "1. 비교표준비 선정\n2. 시점수정\n3. 지역요인 비교\n4. 개별요인 비교\n5. 그 밖의 요인 보정"
+    },
+    {
+      "id": "intro-code-34",
+      "subject": "intro_code",
+      "num": 34,
+      "category": "투자론",
+      "title": "영업경비 계산 시 불포함 항목",
+      "pageRef": "P114,184",
+      "codeText": "취득세 공부한 소감 소개",
+      "detailText": "취득세, 공실, 불량부채, 부채서비스액, 영업소득세, 감가상각비, 소유자 급여, 개인적 업무비"
+    },
+    {
+      "id": "intro-code-35",
+      "subject": "intro_code",
+      "num": 35,
+      "category": "감정평가론",
+      "title": "환원율 구하는 방법-엘우드법",
+      "pageRef": "합P185",
+      "codeText": "엘지가전",
+      "detailText": "엘우드법 : 매 기간 동안의 세전현금흐름, 기간말 부동산의 가치증감분, 보유기간 동안의 지분형성분의 세 요소가 환원율에 미치는 영향으로 구성되어 있다."
+    },
+    {
+      "id": "intro-code-36",
+      "subject": "intro_code",
+      "num": 36,
+      "category": "감정평가론",
+      "title": "환원율 구하는 방법-부채감당법",
+      "pageRef": "합P185",
+      "codeText": "부부대저",
+      "detailText": "환원율 = 부채감당률 x 대부비율 x 저당상수"
+    },
+    {
+      "id": "intro-code-37",
+      "subject": "intro_code",
+      "num": 37,
+      "category": "감정평가론",
+      "title": "환원율 구하는 방법",
+      "pageRef": "합P185",
+      "codeText": "시조투엘부",
+      "detailText": "시장추출법\n조성법(요소시장구성법)\n투자결합법\n엘우드법(저당지분방식)\n부채가당법"
+    },
+    {
+      "id": "intro-code-38",
+      "subject": "intro_code",
+      "num": 38,
+      "category": "감정평가론",
+      "title": "물건별 감정평가",
+      "pageRef": "",
+      "codeText": "건건선항\n동산과자\n영어광기",
+      "detailText": "건물, 건설기계, 선박, 항공기 -> 원가법\n동산, 산림, 과수원, 자동차 -> 거래사례비교법\n영업권, 어업권, 광업재단, 기업가치 -> 수익환원법\n토지 -> 공시지가기준법\n임대료 -> 임대사례비교법"
+    },
+    {
+      "id": "intro-code-39",
+      "subject": "intro_code",
+      "num": 39,
+      "category": "금융론",
+      "title": "부동산금융론 - 지분금융",
+      "pageRef": "",
+      "codeText": "펀드공모를 위해 신디는 리츠와 조인트했다",
+      "detailText": "조인트벤처\n부동산투자회사(REITs)\n부동산신디케이트\n공모에 의한 증자\n부동산펀드"
+    },
+    {
+      "id": "intro-code-40",
+      "subject": "intro_code",
+      "num": 40,
+      "category": "정책론",
+      "title": "외부효과 : 거래당사자가 아닌 제3자에게 의도하지 않은 이익이나 손해를 가져다 주는데 대가를 지불하지도 받지도 않는 상태",
+      "pageRef": "",
+      "codeText": "외부인",
+      "detailText": "부동산의 특성 중 부동성, 인접성과 관련이 있다."
+    },
+    {
+      "id": "intro-code-41",
+      "subject": "intro_code",
+      "num": 41,
+      "category": "정책론",
+      "title": "정/부의 외부효과",
+      "pageRef": "",
+      "codeText": "정소부대\n정핌",
+      "detailText": "정의 외부효과, 과소생산, 과다가격, PIMFY\n부의 외부효과, 과다생산, 과소가격, NIMBY"
+    },
+    {
+      "id": "intro-code-42",
+      "subject": "intro_code",
+      "num": 42,
+      "category": "정책론",
+      "title": "공공임대주택 : 행복주택",
+      "pageRef": "",
+      "codeText": "행복한 신혼부부 초대",
+      "detailText": "행복주택 대상 : 신혼부부, 사회초년생, 대학생"
+    },
+    {
+      "id": "intro-code-43",
+      "subject": "intro_code",
+      "num": 43,
+      "category": "투자론",
+      "title": "자기자본수익률",
+      "pageRef": "",
+      "codeText": "총총이부",
+      "detailText": "자기자본수익률(지분수익률) = 총자본수익률 + (총자본수익률 - 이자율) x 부채비율"
+    },
+    {
+      "id": "intro-code-44",
+      "subject": "intro_code",
+      "num": 44,
+      "category": "투자론",
+      "title": "지렛대효과",
+      "pageRef": "",
+      "codeText": "지총이",
+      "detailText": "지분수익률 > 총자본수익률 > 차입이자율(저당수익률)"
+    },
+    {
+      "id": "intro-code-45",
+      "subject": "intro_code",
+      "num": 45,
+      "category": "시장·입지론",
+      "title": "공장부지의 입지요인",
+      "pageRef": "",
+      "codeText": "중량이 무거운 쪽, 수송비가 많은 쪽에 입지",
+      "detailText": "원료지향형 입지 / 시장지향형 입지"
+    },
+    {
+      "id": "intro-code-46",
+      "subject": "intro_code",
+      "num": 46,
+      "category": "정책론",
+      "title": "우리나라에서 시행하고 있지 않는 제도",
+      "pageRef": "",
+      "codeText": "택도개",
+      "detailText": "택지소유상환제 : 폐지\n토지초과이득세 : 폐지\n개발권 양도제 : 도입안함"
+    },
+    {
+      "id": "intro-code-47",
+      "subject": "intro_code",
+      "num": 47,
+      "category": "정책론",
+      "title": "토지공개념 3법",
+      "pageRef": "",
+      "codeText": "택도개",
+      "detailText": "연금의 현재가치계수x 일시불의 미래가치계수 = 연금의 미래가치계수\n감채기금계수 x 연금의 현재가치계수 = 일시불의 현재가치계수\n저당상수 x 연금의 미래가치계수 = 일시불의 미래가치계수"
+    },
+    {
+      "id": "intro-code-48",
+      "subject": "intro_code",
+      "num": 48,
+      "category": "투자론",
+      "title": "채무불이행률",
+      "pageRef": "",
+      "codeText": "채무는 경부유",
+      "detailText": "채무불이행률 = (영업경비 + 부채서비스액) / 유효총소득"
+    },
+    {
+      "id": "intro-code-49",
+      "subject": "intro_code",
+      "num": 49,
+      "category": "투자론",
+      "title": "요구수익률",
+      "pageRef": "",
+      "codeText": "요무위인",
+      "detailText": "요구수익률 = 무위험률 + 위험할증률 + 예상 인플레이션율"
+    },
+    {
+      "id": "intro-code-50",
+      "subject": "intro_code",
+      "num": 50,
+      "category": "투자론",
+      "title": "부동산투자 위험 처리방법",
+      "pageRef": "",
+      "codeText": "기하요상",
+      "detailText": "투자수익을 가능한 한 낮게 추계하고 이를 기준으로 투자를 결정 -> 기대수익률을 하향조정\n기대되는 미래수익을 현재가치로 환원할 때 높은 위험이 존재하는 투자안일수록 높은 위험조정할인율을 적용하여 할인 -> 요구수익률을 상향조정."
+    },
+    {
+      "id": "intro-code-51",
+      "subject": "intro_code",
+      "num": 51,
+      "category": "투자론",
+      "title": "자본화원계수의 관계",
+      "pageRef": "",
+      "codeText": "연일연\n감연일\n저연일",
+      "detailText": "택지소유상환제 : 폐지\n토지초과이득세 : 폐지\n개발부담금제 (개발이익환수법)"
+    },
+    {
+      "id": "intro-code-52",
+      "subject": "intro_code",
+      "num": 52,
+      "category": "투자론",
+      "title": "할인현금흐름분석법",
+      "pageRef": "",
+      "codeText": "순수내",
+      "detailText": "순현가법\n수익성지수법\n내부수익률법"
+    },
+    {
+      "id": "intro-code-53",
+      "subject": "intro_code",
+      "num": 53,
+      "category": "투자론",
+      "title": "화폐의 시간가치를 고려한 부동산 투자 할인기법",
+      "pageRef": "",
+      "codeText": "순수내현",
+      "detailText": "순현가법\n수익성지수법\n내부수익률법\n현가회수기간법"
+    },
+    {
+      "id": "intro-code-54",
+      "subject": "intro_code",
+      "num": 54,
+      "category": "투자론",
+      "title": "내부수익률법",
+      "pageRef": "",
+      "codeText": "내부수익률법은 자기자신(IRR)으로 굴린다",
+      "detailText": "내부수익률(IRR)은 투자로부터 예상된 현금유입의 현가합과 현금유출의 현가합을 서로 같게 만드는 할인율이며, 내부수익률법으 내부수익률을 요구수익률과 비교하여 투자결정을 하는 방법"
+    },
+    {
+      "id": "intro-code-55",
+      "subject": "intro_code",
+      "num": 55,
+      "category": "감정평가론",
+      "title": "수익환원법",
+      "pageRef": "합P166",
+      "codeText": "장미",
+      "detailText": "대상물건이 장래 산출할 것으로 기대되는 순수익이나 미래의 현금흐름을 환원하거나 할인하여 대상물건의 가액을 산정하는 감정평가방법."
+    },
+    {
+      "id": "intro-code-56",
+      "subject": "intro_code",
+      "num": 56,
+      "category": "총론",
+      "title": "부동산가격의 발생요인",
+      "pageRef": "",
+      "codeText": "효상유이",
+      "detailText": "부동산의 효용(경제적) -> 수요\n부동산의 상대적 희소성(경제적) -> 공급\n부동산에 대한 유효수요(경제적) -> 수요\n부동산의 이전성(법률적)"
+    },
+    {
+      "id": "intro-code-57",
+      "subject": "intro_code",
+      "num": 57,
+      "category": "감정평가론",
+      "title": "재조달원가 산정방법",
+      "pageRef": "",
+      "codeText": "총구지\n단지",
+      "detailText": "직접법 : 총량조사법, 구성단위법, 비용지수법\n간접법 : 단위비교법, 비용지수법"
+    },
+    {
+      "id": "intro-code-58",
+      "subject": "intro_code",
+      "num": 58,
+      "category": "감정평가론",
+      "title": "감가수정의 방법",
+      "pageRef": "합P178",
+      "codeText": "내관분",
+      "detailText": "내용연수에 의한 방법(정액법, 정률법, 상환기금법)\n관찰감가법\n분해법"
+    },
+    {
+      "id": "intro-code-59",
+      "subject": "intro_code",
+      "num": 59,
+      "category": "감정평가론",
+      "title": "적산법",
+      "pageRef": "합P165",
+      "codeText": "가기필",
+      "detailText": "대상물건의 기초가액에 기대이율을 곱하여 산정된 기대수익에, 대상물건을 계속하여 임대하는 데 필요한 경비를 더하여 대상물건의 임대료를 산정."
+    },
+    {
+      "id": "intro-code-60",
+      "subject": "intro_code",
+      "num": 60,
+      "category": "감정평가론",
+      "title": "감정평가 3방식",
+      "pageRef": "합P175",
+      "codeText": "원비수",
+      "detailText": "원가방식(비용접근법) : 원가법(가액 평가조건), 적산가액(시산가액)\n비교방식(시장접근법) : 거래사례비교법(가액 평가조건), 비준가액(시산가액)\n수익방식(소득접근법) : 수익환원법(가액 평가조건), 수익가액(시산가액)"
+    },
+    {
+      "id": "intro-code-61",
+      "subject": "intro_code",
+      "num": 61,
+      "category": "감정평가론",
+      "title": "감정평가에 관한 규칙 용어 - 시장가치",
+      "pageRef": "합P165",
+      "codeText": "대통충거당",
+      "detailText": "시장가치 : 감정평가의 대상이 되는 토지 등이 통상적인 시장에서 충분한 기간 동안 거래를 위하여 공개된 후 그 대상물건의 내용에 정통한 당사자 사이에 신중하고 자발적인 거래가 있을 경우 성립될 가능성이 가장 높다고 인정되는 대상물건의 가액을 말한다.\n\n대상물건의 시장성\n통상적인 시장\n출품기간의 합리성\n거래의 자연성\n당사자의 정통성"
+    },
+    {
+      "id": "intro-code-62",
+      "subject": "intro_code",
+      "num": 62,
+      "category": "감정평가론",
+      "title": "가치형성요인",
+      "pageRef": "합P165",
+      "codeText": "일지개",
+      "detailText": "대상물건의 경제적 가치에 영향을 미치는 일반요인, 지역요인 및 개별요인"
+    },
+    {
+      "id": "intro-code-63",
+      "subject": "intro_code",
+      "num": 63,
+      "category": "감정평가론",
+      "title": "감가수정",
+      "pageRef": "합P166,178",
+      "codeText": "물기경",
+      "detailText": "대상물거에 대한 재조달원가를 감액하여야 할 요인이 있는 경우에 물리적 감가, 기능적 감가 또는 경제적 감가등을 고려하여 그에 해당하는 금액을 재조달원가에서 공제하여 기준시점에 있어서의 대상물건의 가액을 적정화하는 작업"
+    },
+    {
+      "id": "intro-code-64",
+      "subject": "intro_code",
+      "num": 64,
+      "category": "감정평가론",
+      "title": "재조달원가의 대치원가",
+      "pageRef": "",
+      "codeText": "대기",
+      "detailText": "복제원가(물리적 측면)에는 물리적, 기능적, 경제적 감가가 필요하지만 대치원가(효용 측면)는 기능적 감가를 하지 않는다."
+    },
+    {
+      "id": "intro-code-65",
+      "subject": "intro_code",
+      "num": 65,
+      "category": "개발·관리론",
+      "title": "부동산분석의 유형",
+      "pageRef": "합P144",
+      "codeText": "지시시타투",
+      "detailText": "시장분석(선행) : 지역경제분석 - 시장분석 - 시장성분석\n경제성분석(후행) : 타당성분석 - 투자분석"
+    },
+    {
+      "id": "intro-code-66",
+      "subject": "intro_code",
+      "num": 66,
+      "category": "개발·관리론",
+      "title": "부동산 재개발사업의 시행방법",
+      "pageRef": "합P146",
+      "codeText": "보수개철",
+      "detailText": "보전재개발\n수복재개발\n개량재개발\n철거재개발"
+    },
+    {
+      "id": "intro-code-67",
+      "subject": "intro_code",
+      "num": 67,
+      "category": "금융론",
+      "title": "지분금융",
+      "pageRef": "",
+      "codeText": "펀드공모를 위해 신디는 리츠와 조인트했다.",
+      "detailText": "부동산신디케이트\n조인트벤처\n부동산투자회사(REITs)\n공모에 의한 증자\n부동산펀드"
+    },
+    {
+      "id": "intro-code-68",
+      "subject": "intro_code",
+      "num": 68,
+      "category": "시장·입지론",
+      "title": "동심원이론(버제스)의 토지이용패턴",
+      "pageRef": "",
+      "codeText": "중전저고통",
+      "detailText": "중심업무지구->천이지대->근로자주택지대(저소득층 주거지역)->중산층 주택지대(중고소득층 주거지역)->통근자 지대"
+    },
+    {
+      "id": "intro-code-69",
+      "subject": "intro_code",
+      "num": 69,
+      "category": "개발·관리론",
+      "title": "부동산개발의 과정",
+      "pageRef": "합P142",
+      "codeText": "아예부타금건마",
+      "detailText": "아이디어단계\n예비적 타당성 분석단계\n부지구입단계\n타당성 분석단계\n금융단계\n건설단계\n마케팅단계"
+    },
+    {
+      "id": "intro-code-70",
+      "subject": "intro_code",
+      "num": 70,
+      "category": "개발·관리론",
+      "title": "부동산개발의 위험분석",
+      "pageRef": "합P143",
+      "codeText": "법시비",
+      "detailText": "법률적위험\n시장위험\n비용위험"
+    },
+    {
+      "id": "intro-code-71",
+      "subject": "intro_code",
+      "num": 71,
+      "category": "시장·입지론",
+      "title": "도시공간구조론 - 다차원이론",
+      "pageRef": "",
+      "codeText": "3차원 시몬스 다",
+      "detailText": "동심원이론, 선형이론, 다핵심이론의 요소를 종합하여 3개의 차원(가족특성, 사회경제적 지위, 인종/민족적 분화)에서 파악해야 한다고 주장한 이론은 시몬스(J. W. Simmons)의 다차원이론이다."
+    },
+    {
+      "id": "intro-code-72",
+      "subject": "intro_code",
+      "num": 72,
+      "category": "금융론",
+      "title": "주택저당증권(MBS)",
+      "pageRef": "",
+      "codeText": "T -> 투, B -> 발, T&B -> 원투 저발",
+      "detailText": "지분형(MPTS)\n- 원리금수취권&주택저장채권집합물의 소유권 -> 투자자\n- 조기상환위험 & 채무불이행위험 -> 투자자\n\n채권형(MBB)\n- 원리금수취권&주택저장채권집합물의 소유권 -> 발행자\n- 조기상환위험 & 채무불이행위험 -> 발행자\n\n혼합형(MPTB, CMO)\n- MPTS와 MBB의 혼합형\n- 원리금수취권/조기상환위험 -> 투자자, 주택저당채권집합물의 소유권/채무불이행위험 -> 발행자"
+    }
+  ],
+  "intro_calc": [
+    {
+      "id": "intro-calc-1",
+      "subject": "intro_calc",
+      "num": 1,
+      "category": "부동산경제론",
+      "title": "시장수요함수",
+      "codeText": "가격기준(P): Q앞 숫자÷사람수 / 수량기준(Q): 전체×사람수",
+      "detailText": "가격기준 : 숫자는 그대로하고, Q앞의 수만 사람수로 나눌 것.\n\n- P = 100 – 4Q 이고 수요자 수가 2배이면 P = 100 – 2Q 가 됨\n\n수량기준 : 숫자와 P앞의 수에 사람수를 곱할 것.\n\n- Q = 30 – 2P 이고 수용자가 100명이면 Q = 3,000 – 200P 가 됨\n\n수요함수가 2개이고 절편이 서로 같을 경우 : 앞의 숫자는 그대로 두고, 기울기만 역수로 합산후 다시 역수로 계산.\n\n- P=100-Q 와 P=100-2Q 이면 P=100-2/3Q 가 됨"
+    },
+    {
+      "id": "intro-calc-2",
+      "subject": "intro_calc",
+      "num": 2,
+      "category": "부동산경제론",
+      "title": "거미집모형",
+      "codeText": "수탄수 & 공탄발 (P식 기울기 반비례 / Q식 계수 비례)",
+      "detailText": "P식 -\\> Q앞 크기값과 탄력성은 반비례 -\\> 수탄수 & 공탄발\n\nQ식 -\\> P앞 크기값과 탄력성은 비례 -\\> 수타수 & 공탄발"
+    },
+    {
+      "id": "intro-calc-3",
+      "subject": "intro_calc",
+      "num": 3,
+      "category": "부동산경제론",
+      "title": "수요량 변화율",
+      "codeText": "-가가 + 소소 + 교교",
+      "detailText": "= -가가\n\n= -가가 + 소소\n\n= -가가 + 교교\n\n= 소소 + 교교\n\n= -가가 + 소소 + 교교"
+    },
+    {
+      "id": "intro-calc-4",
+      "subject": "intro_calc",
+      "num": 4,
+      "category": "부동산시장론",
+      "title": "정보의 현재가치",
+      "codeText": "차안나 = (개발O - 개발X) × 안될확률 ÷ (1+r)ⁿ",
+      "detailText": "(개발될 경우 가치 – 개발안될 경우의 가치) x 개발안될 확률 ÷ (1 + 요구수익률)<sup>n</sup>\n\n차안나 : 정보의 진짜 힘은 '좋은 일이 생길 때'가 아니라, **'꽝을 피하게 해줄 때'** 나옵니다."
+    },
+    {
+      "id": "intro-calc-5",
+      "subject": "intro_calc",
+      "num": 5,
+      "category": "부동산시장론",
+      "title": "위치 지대",
+      "codeText": "위치지대 = 생산물가격 - 생산비 - 수송비(단위당×거리)",
+      "detailText": "<span class=\"mark\">**위치 지대**</span> = 생산물가격 – 생산비 – 수송비(단위당 수송비 x 거리)"
+    },
+    {
+      "id": "intro-calc-6",
+      "subject": "intro_calc",
+      "num": 6,
+      "category": "부동산시장론",
+      "title": "레일리의 소매인력법칙기반 인구수",
+      "codeText": "유인력 = 인구 ÷ 거리² (비율 배분)",
+      "detailText": "A도시 인구수 ÷ 거리 ÷ 거리 : B도시 인구수 ÷ 거리 ÷ 거리 -\\> C도시 인구수를 각 비율 적용"
+    },
+    {
+      "id": "intro-calc-7",
+      "subject": "intro_calc",
+      "num": 7,
+      "category": "부동산시장론",
+      "title": "허프의 확률적 상권모형",
+      "codeText": "고객유인력 = 매장크기 ÷ 거리^λ (비율 배분)",
+      "detailText": "1\\) 매장 고객유인력 = 매장크기 / 거리<sup>λ</sup> \\[λ : 거리마찰계수\\]\n\n2\\) 매장별 고객유인력을 비율로 비교 산출하고 해당매장에 대한 이용객 수는 도시인구수에 비율적용"
+    },
+    {
+      "id": "intro-calc-8",
+      "subject": "intro_calc",
+      "num": 8,
+      "category": "부동산시장론",
+      "title": "컨버스의 분기점모형",
+      "codeText": "A분기점 거리 = 전체거리 ÷ (1 + √(B크기/A크기))",
+      "detailText": "$$\\text{A로부터의~분기점~거리} = \\frac{\\text{A와~B~사이의~전체~거리}}{1 + \\sqrt{\\frac{\\text{B의~크기}}{\\text{A의~크기}}}}$$"
+    },
+    {
+      "id": "intro-calc-9",
+      "subject": "intro_calc",
+      "num": 9,
+      "category": "부동산정책론",
+      "title": "초과수요량 계산",
+      "codeText": "수요함수(Qd)와 공급함수(Qs)에 규제가격 대입 후 차이 계산",
+      "detailText": "1\\) 호당 규제금액제시시 : 수요함수와 공급함수에 규제금액을 각각 대입후 결과값을 비교\n\n2\\) 균형임대료 대비 금액 제시시 :\n\n균형임대료를 먼저 계산하고,\n\n균형임대료로부터 조정된 숫자를 수요함수와 공급함수에 각각 대입후 결과값을 비교"
+    },
+    {
+      "id": "intro-calc-10",
+      "subject": "intro_calc",
+      "num": 10,
+      "category": "부동산투자론",
+      "title": "자기자본수익률 구하기",
+      "codeText": "총총이부 : 총자본수익률 + (총자본수익률 - 이자율) × 부채비율",
+      "detailText": "<span class=\"mark\">자기자본수익률(ROE, Return on Equity, 지분수익률)</span>\n\n= 지분수익(총자본수익-이자지급액) ÷ 지분투자액 x 100\n\n<span class=\"mark\">자기자본수익률</span>(부채율 제시시)\n\n= 총자본수익률 + \\[(총자본수익률 – 이자율) x <u>부채비율</u>\\]\n\n= 내 몫 + 은행이 남겨준 덤 = <span class=\"mark\">“**총총이부”**</span>\n\n- 부채비율 = 부채총계 / 지분총계 = 대부비율 / (1-대부비율)\n\n$$\\text{내~수익률} = \\underset{\\text{①~내~돈이~정직하게~번~몫}}{\\overset{\\text{총자본수익률}}{︸}} + \\underset{\\text{②~남의~돈으로~남겨먹은~마진~모조리~챙기기}}{\\overset{\\left( \\text{총자본수익률} - \\text{차입금리} \\right) \\times \\text{부채비율}}{︸}}$$\n\n<span class=\"mark\">자기자본수익률</span>(<span class=\"mark\">총자본수익률</span> : <u>타인자본 미사용</u>)\n\n= 총자본수익(소득이득(순영업소득,NOI:Net Operating Income)+자본이득) ÷ 총투자액x100"
+    },
+    {
+      "id": "intro-calc-11",
+      "subject": "intro_calc",
+      "num": 11,
+      "category": "부동산투자론",
+      "title": "기대수익률과 분산 구하기",
+      "codeText": "기대수익률 = Σ(수익률×확률) / 변이계수 = 표준편차÷기대수익률",
+      "detailText": "<span class=\"mark\">기대수익률</span> = Σ(각 경제상황별 추정(예상)수익률 x 발생확률)\n\n<span class=\"mark\">투자자산의 분산</span> = Σ\\[(각 경제상황별 추정 수익률 – 기대수익률)<span class=\"mark\"><sup>2</sup></span> x 발생확률\\]\n\n변이계수(상대적위험도 측정) = 표준편차/기대수익률 -\\> 계산한 값이 단위수익당 위험크기를 뜻하니, 작을수록 유리한 투자안"
+    },
+    {
+      "id": "intro-calc-12",
+      "subject": "intro_calc",
+      "num": 12,
+      "category": "부동산투자론",
+      "title": "요구수익률과 투자가치 구하기",
+      "codeText": "요무위인 / 투자가치 = 순영업소득(NOI) ÷ 요구수익률",
+      "detailText": "<span class=\"mark\">요구수익률</span> = 무위험률 + 위험할증률 + 예상인플레이션율 -\\> 피셔효과\n\n<span class=\"mark\">투자가치</span> = 예상순수익 / 요구수익률 = 순영업소득(순수익) / 요구수익률"
+    },
+    {
+      "id": "intro-calc-13",
+      "subject": "intro_calc",
+      "num": 13,
+      "category": "부동산투자론",
+      "title": "포트폴리오의 기대수익률 구하기",
+      "codeText": "포트폴리오 기대수익률 = Σ(개별 기대수익률 × 구성비율)",
+      "detailText": "<span class=\"mark\">포트폴리오의 기대수익률</span> = Σ(각 개별자산의 기대수익률 x 각 개별자산의 구성비율)"
+    },
+    {
+      "id": "intro-calc-14",
+      "subject": "intro_calc",
+      "num": 14,
+      "category": "부동산투자론",
+      "title": "화폐의 시간가치",
+      "codeText": "일내가·일현가·연내가·감채·연현가·저당상수 + 쌀집계산기 작동법",
+      "detailText": "**<span class=\"mark\">일시불의 내가계수</span>** \\[현재 목돈 → 미래 목돈\\]\\[1원을 ~ n년 후에\\]\n\n: (1 + r)ⁿ\n\n: 3년 (1+r) xx== x 금액\n\n**<span class=\"mark\">일시불의 현가계수</span>** \\[미래 목돈 → 현재 목돈\\]\\[n년 후의 1원을 ~ 할인\\]\n\n: 1 / (1 + r)ⁿ\n\n: 3년 금액 ÷ ÷(1+r) ===\n\n**<span class=\"mark\">연금의 내가계수</span>** \\[매기 적금 → 만기 목돈 합계\\]\\[매년 1원씩 ~ n년 후에\\]\n\n: (1 + r)ⁿ - 1 / r\n\n: 3년 금액= x(1+r)= x(1+r)= GT\n\n**<span class=\"mark\">감채기금계수</span>** \\[미래 목표 목돈 → 매기 적립액\\]\\[n년 후에 1원을 만들기 위해서 ~ 매년 적립\\]\n\n: r / (1 + r)ⁿ - 1\n\n: 3년 금액÷(1+r)= ÷(1+r)= ÷(1+r)= GT\n\n**<span class=\"mark\">연금의 현가계수</span>** \\[매기 연금/임대료 → 현재 일시불 환산\\]\\[매년 1원씩 ~ 일시불로 환원\\]\n\n: 1 - (1 + r)⁻ⁿ / r\n\n**<span class=\"mark\">저당상수(MC)</span>** \\[현재 대출금→매기 원리금균등 상환액\\]\\[n년동안 1원을 빌리고 ~매년 지불\\]\n\n: r / 1 - (1 + r)⁻ⁿ\n\n<span class=\"mark\">대출잔액(미상환저당잔금)</span> :\n\n$$\\text{현재~대출잔액} = \\underset{\\text{매년~낼~돈(연금)}}{\\overset{\\text{원리금상환액}}{︸}} \\times \\underset{\\text{남은~기간의~미래~이자를~빼고~오늘~가치로~환산}}{\\overset{\\text{잔여기간의~연금의~현가계수}}{︸}}$$\n\n<span class=\"mark\">원리금상환액 :</span>\n\n$$\\text{원리금상환액(부채서비스액)} = \\text{대출원금} \\times \\text{저당상수}$$\n\n<span class=\"mark\">저당승계권의 현재가치</span> :\n\n= \\[ (신규대출 ÷ 신규 연금현가계수) – (기존대출액 ÷ 기존 연금현가계수) \\] x 신규 연금현가계수"
+    },
+    {
+      "id": "intro-calc-15",
+      "subject": "intro_calc",
+      "num": 15,
+      "category": "부동산투자론",
+      "title": "영업의 현금흐름계산",
+      "codeText": "가공유경순부전세후 / 순대이감·세대원감 / 매경순미전세후",
+      "detailText": "단위당 예상임대료\n\n<u>X 임대단위 수</u>\n\n<span class=\"mark\">가</span>능총소득(PGI)\n\n\\- <span class=\"mark\">공</span>실 및 불량부채\n\n<u>+ 기타소득</u>\n\n<span class=\"mark\">유</span>효총소득(EGI)\n\n<u>- 영업<span class=\"mark\">경</span>비</u>\n\n<span class=\"mark\">순</span>영업소득(NOI)\n\n<u>- <span class=\"mark\">부</span>채서비스액</u>\n\n세<span class=\"mark\">전</span>현금흐름\n\n<u>- 영업소득<span class=\"mark\">세</span></u>\n\n세<span class=\"mark\">후</span>현금흐름\n\n**영업경비 불포함 항목** (암기코드: 취득세 공부한 소감 소개) :\n\n<span class=\"mark\">취득세</span>, <span class=\"mark\">공</span>실 및 대손충당금, <span class=\"mark\">부</span>채서비스액, 영업<span class=\"mark\">소</span>득세, <span class=\"mark\">감</span>가상각비, <span class=\"mark\">소</span>유자 급여, <span class=\"mark\">개</span>인적 업무비\n\n영업경비 포함 항목 :\n\n재산세, 화재보험료, 손해보험료, 유지관리비, 수선비, 청소비, 공과금, 관리인급여, 용역비, 직원인건비\n\n**<span class=\"mark\">영업소득세 계산</span>**\n\n1) 영업소득세 = \\[<span class=\"mark\">순</span>영업소득 + <span class=\"mark\">대</span>체충당금 – <span class=\"mark\">이자지급액</span> – <span class=\"mark\">감</span>가상각비 \\] x 세율\n\n2) 영업소득세 = \\[<span class=\"mark\">세</span>전현금흐름 + <span class=\"mark\">대</span>체충당금 + <span class=\"mark\">원금상환액</span> – <span class=\"mark\">감</span>가상각비\\] x 세율\n\n**<span class=\"mark\">지분복귀액 계산</span>**\n\n<span class=\"mark\">매</span>도가격\n\n<u>– 매도<span class=\"mark\">경</span>비</u>\n\n<span class=\"mark\">순</span>매도액\n\n<u>– <span class=\"mark\">미</span>상환저당잔금</u>\n\n세<span class=\"mark\">전</span>지분복귀액\n\n<u>– 자본이득<span class=\"mark\">세</span></u>\n\n세<span class=\"mark\">후</span>지분복귀액"
+    },
+    {
+      "id": "intro-calc-16",
+      "subject": "intro_calc",
+      "num": 16,
+      "category": "부동산투자론",
+      "title": "할인현금흐름(현금수지)분석법",
+      "codeText": "NPV(현가합 - 투자금), PI(유입현가 ÷ 유출현가), IRR",
+      "detailText": "순현재가치(<span class=\"mark\">NPV</span>, Net Present Value) = Σ\\[예상 유입액 / (1+요구수익률)<sup>n</sup>\\] – 현재 투자금\n\n수익성지수(<span class=\"mark\">PI</span>, Profitability Index) = 현금유입의 현재가치 합계 / 현금유출의 현재가치 합계\n\n내부수익률(<span class=\"mark\">IRR</span>, Internal Rate of Return) = \\[(들어오는 총 유입액 – 현재 나간 투자금) / 현재 나간 투자금\\] X 100"
+    },
+    {
+      "id": "intro-calc-17",
+      "subject": "intro_calc",
+      "num": 17,
+      "category": "부동산투자론",
+      "title": "어림셈법",
+      "codeText": "승수법(투자액÷소득) ↔ 수익률법(소득÷투자액) 상호 역수관계",
+      "detailText": "<span class=\"mark\">**어림셈법**</span> – 승수법과 수익률법은 상호 역수관계\n\n<span class=\"mark\">승수법 :</span>\n\n1. 총소득승수 = 총투자액 / 총소득 (총투자액 : 빚을 갚기전, 부동산자체가 순수하게 벌어들인 총수익)\n\n2. <span class=\"mark\">순소득승수</span> = 총투자액 / 순영업소득\n\n3. <span class=\"mark\">세전현금흐름승수</span>(세전현금수지승수) = 지분투자액 / 세전현금흐름 (지분투자액:은행은 이미 자기몫을 챙겼고, 내 투자금에 대한 대가)\n\n4. 세후현금흐름승수(세후현금수지승수) = 지분투자액 / 세후현금흐름\n\n<span class=\"mark\">수익률법 :</span>\n\n1. 총자산회전율 = 총소득 (가능총소득 또는 유효총소득)/총자산 (총투자액 = 부동산 전체 가격)\n\n2. <span class=\"mark\">종합자본환원율</span>(Cap Rate/Overall Capitalization Rate) = 순영업소득 / 총투자액\n\n3. 지분배당율(지환원율) = 세전현금흐름 / 지분투자액\n\n4. 세후수익률 = 세후현금흐름 / 지분투자액"
+    },
+    {
+      "id": "intro-calc-18",
+      "subject": "intro_calc",
+      "num": 18,
+      "category": "부동산투자론",
+      "title": "비율분석법",
+      "codeText": "LTV · DCR · DTI · DSR · DR(경부유) · OER",
+      "detailText": "<span class=\"mark\">LTV(</span>담보인정비율/대출비율/저당비율/<span class=\"mark\">대부비율</span>/**Loan To Value ratio**) = 융자액 / 부동산가치\n\n- 부채비율 = 부채총계 / 지분총계 = 대부비율 / (1-대부비율)\n\n<span class=\"mark\">DCR</span>(부채감당율/**Debit Service Coverage ratio**) = 순영업소득 / 부채서비스액\n\n<span class=\"mark\">DTI</span>(총부채상환비율/**Debt To Income**) = <span class=\"mark\">연간부채상환액(부채서비스액)</span> / 연간소득액\n\n<span class=\"mark\">DSR</span>(총부채원리금상환비율/**Debt Service Ratio)** = 연간 금융부채 원리금상환액 / 연간소득액\n\n<span class=\"mark\">DR</span>(채무불이행률/**Default Ratio**) = 영업경비+부채서비스 / 유효총소득\n\n<span class=\"mark\">OER</span>(영업경비비율/**Operating Expense Ratio**) = 영업경비 / 유효총소득"
+    },
+    {
+      "id": "intro-calc-19",
+      "subject": "intro_calc",
+      "num": 19,
+      "category": "부동산금융론",
+      "title": "LTV & DTI & DCR 제약하에 최대 대출가능액 구하기",
+      "codeText": "Min(LTV기준, DTI기준, DCR기준) - 기존대출액",
+      "detailText": "**<span class=\"mark\">최대 대출가능액</span> :** 둘 중 작은 금액에서 기존대출액을 뺀 금액\n\n<span class=\"mark\">LTV기준</span>(자산가치기준) : 부동산가치 x LTV = 대출가능액\n\n<span class=\"mark\">DTI기준</span>(현금수지기준) : <u>연간소득액 x DTI</u> ÷ 저당상수 = 대출가능액\n\n- <u>부채서비스액</u>(원리금상환액) = 대출원금(저당대부액) x 저당상수 = 원리금상환액+이자지급액 = 순영업소득/부채감당률\n\n<span class=\"mark\">DCR기준</span>(<span class=\"mark\">현금수지기준</span>) : <u>순영업소득 ÷ DCR</u> ÷ 저당상수 = 대출가능액\n\n<span class=\"mark\">DSR 기준</span> = (연간소득 × DSR - 기존 기타부채 연간 원리금상환액) ÷ 저당상수"
+    },
+    {
+      "id": "intro-calc-20",
+      "subject": "intro_calc",
+      "num": 20,
+      "category": "부동산금융론",
+      "title": "원금균등상환 조건에서 원리금 구하기",
+      "codeText": "매회 원금 = 대출÷기간 / 첫회 이자 = 대출×연이자율÷12",
+      "detailText": "1) 매회 원금상환액 : 저당대부액 / 융자기간(납입횟수)\n\n2) 첫 회 이자 : (저당대부액 x 연이자율) / 12개월\n\n3) 첫 회 원리금상환액 : 첫회 원금상환액 + 이자액"
+    },
+    {
+      "id": "intro-calc-21",
+      "subject": "intro_calc",
+      "num": 21,
+      "category": "부동산금융론",
+      "title": "원리금균등상환 조건에서 원금 구하기",
+      "codeText": "원리금 = 대출×저당상수 / n회차 원금 = 1회차원금 × (1+r)^(n-1)",
+      "detailText": "1) 매 회 원리금상환액 : 저당대부액 x 저당상수\n\n2) 첫 회 이자 : 저당대부액 x 연이자율\n\n3) 첫 회 원금 : 매 회 원리금 상환액 – 첫 회이자\n\n> (저당상수(저당환원율) = 원금회수율 + 이자수익률 -\\> 원금회수율 = 저당상수(저당환원율) – 이자수익률)\n\n4) n회차 원금(원리금균등은 이자가 줄어드는만큼 원금이 늘어난다)\n\n> <span class=\"mark\">n회차 원금상환액 = 1회차 원금상환액 × (1 + r)^(n-1)</span>"
+    },
+    {
+      "id": "intro-calc-22",
+      "subject": "intro_calc",
+      "num": 22,
+      "category": "부동산개발및관리론",
+      "title": "입지계수",
+      "codeText": "LQ = (지역X/지역전체) ÷ (전국X/전국전체) [LQ>1 기반산업]",
+      "detailText": "$$\\text{입지계수(LQ)} = \\frac{\\text{특정~지역의~해당~산업~구성비}}{\\text{전국의~해당~산업~구성비}} = \\frac{\\left( \\frac{\\text{A지역~X산업~고용자~수}}{\\text{A지역~전체~산업~고용자~수}} \\right)}{\\left( \\frac{\\text{전국~X산업~고용자~수}}{\\text{전국~전체~산업~고용자~수}} \\right)}$$\n\nLQ \\> 1 : 수출기반산업\n\nLQ = 1 : 자급\n\nLQ \\< 1 : 비수출기반산업\n\n- <span class=\"mark\">두지역 고용자수 합계가 같으면, 두지역의 입지계수의 합은 2</span>\n\n- <span class=\"mark\">두지역 비교시 전국은 같으니 분자부분만 계산하여 비교하고 순위 평가</span>"
+    },
+    {
+      "id": "intro-calc-23",
+      "subject": "intro_calc",
+      "num": 23,
+      "category": "부동산개발및관리론",
+      "title": "비율임대차 방식에 의한 임대료 구하기",
+      "codeText": "기본임대료 + 추가임대료(손익분기점 초과매출 × 추가비율)",
+      "detailText": "1\\) 기본임대료 : 손익분기점 매출액 이하에 적용\n\n2\\) 추가임대료 : 손익분기점 매출액 이상으로서 추가 임대료율이 적용\n\n3\\) 연임대료 : 기본임대료 + (기본임대료 + 추가임대료)"
+    },
+    {
+      "id": "intro-calc-24",
+      "subject": "intro_calc",
+      "num": 24,
+      "category": "부동산감정평가론",
+      "title": "원가법에서 재조달원가를 구하기",
+      "codeText": "㎡당 재조달원가 = 총공사비 × (기준시점지수 ÷ 준공시점지수) ÷ 연면적",
+      "detailText": "$$\\text{m}^{2}\\text{당~}\\text{재조달원가}\\text{ } = \\ \\frac{\\text{총~공사비(총계)} \\times \\left( \\frac{\\text{기준시점~지수}}{\\text{준공시점~지수}} \\right)}{\\text{연면적}}$$"
+    },
+    {
+      "id": "intro-calc-25",
+      "subject": "intro_calc",
+      "num": 25,
+      "category": "부동산감정평가론",
+      "title": "원가법에서 정액법에 의한 감가수정액과 적산가액을 구하기",
+      "codeText": "재감경경내 : 적산가액 = 재조달원가 - (재×감×경÷경내)",
+      "detailText": "**시산가액 종류** : **적**산가액(원가법), **비**준가액(거래사례비교법), **수**익가액(수익환원법)\n\n**원가법 :**\n\n<span class=\"mark\">정액법</span>의 적산가액 = 재조달원가 – (<span class=\"mark\">재</span>조달원가 x <span class=\"mark\">감</span>가율 x <span class=\"mark\">경</span>과연수 ÷ <span class=\"mark\">경</span>제적 <span class=\"mark\">내</span>용연수) -\\> **<span class=\"mark\">재감경경내</span>**\n\n- 적산가액 = 재조달원가 – 감가누계액\n\n> 감가누계액(감가수정액) = (재조달원가 x 감가율 x 경과연수 ÷ 경제적 내용연수)\n\n- **재조달원가** = (신축공사비 x 연면적) x 일시불내가계수(1 + r)ⁿ\n\n> = (신축공사비 x 연면적) x 건축비지수(기준시점 ÷ 사용승인시점)\n\n- **감가율** = 1 - 잔존가치율\n\n- 경제적 내용연수 = 경과연수 + 경제적 잔존연수"
+    },
+    {
+      "id": "intro-calc-26",
+      "subject": "intro_calc",
+      "num": 26,
+      "category": "부동산감정평가론",
+      "title": "원가법에서 정률법에 의한 적산가액을 구하기",
+      "codeText": "적산가액 = 재조달원가 × (1 - 감가율)^경과연수",
+      "detailText": "<span class=\"mark\">정률법의</span> 적산가액\n\n1) 시점수정치를 먼저 구함 : 재조달원가를 구하기 위해서는 기준시점으로 시점수정을 하여야 한다.\n\n2) 재조달원가 x (전년대비 잔가율)<sup>m(경과연수)’</sup> = 재조달원가 x (1-감가율) <sup>m</sup>"
+    },
+    {
+      "id": "intro-calc-27",
+      "subject": "intro_calc",
+      "num": 27,
+      "category": "부동산감정평가론",
+      "title": "거래사례비교법에서 보정치를 구하기",
+      "codeText": "대상 / 사례 [보정대상(~이/가: 100±α) ÷ 비교대상(~보다: 100)]",
+      "detailText": "<span class=\"mark\">사정보정치</span>(비교치)= 대상부동산 / 사례부동산\n\n보정방법 :\n\n1) 보정대상 : ~이, ~가 (우세, 고가 : 100 + ∝%, 열세, 저가 : 100 - ∝% ),\n\n2) 비교대상 : ~보다(100)"
+    },
+    {
+      "id": "intro-calc-28",
+      "subject": "intro_calc",
+      "num": 28,
+      "category": "부동산감정평가론",
+      "title": "거래사례비교법에서 비준가액을 구하기",
+      "codeText": "사시지개면 : 사례가액 × 사정보정 × 시점수정 × 지역 × 개별 × 면적",
+      "detailText": "**<span class=\"mark\">거래사례비교법 :</span>**\n\n<span class=\"mark\">비준가액</span> = 사례가액 x (<span class=\"mark\">사</span>정보정치 x <span class=\"mark\">시</span>점수정치 x <span class=\"mark\">지</span>역요인 비교치 x <span class=\"mark\">개</span>별요인 비교치 x <span class=\"mark\">면</span>적비교치)\n\n- 시점수정치 = 1+지가변동율\n\n- 면적비교치 = 평가대상토지 / 거래사례토지"
+    },
+    {
+      "id": "intro-calc-29",
+      "subject": "intro_calc",
+      "num": 29,
+      "category": "부동산감정평가론",
+      "title": "공시지가기준법에 의한 토지가치를 구하기",
+      "codeText": "시지개그 : 표준지공시지가 × 시점 × 지역 × 개별 × 그밖 (사정보정X)",
+      "detailText": "공시지가기준법 : 표준지공시지가를 기준으로 평가 :\n\n<span class=\"mark\">비교표준지 선정</span>(표준지공시지가를 기준으로 평가하므로 <u>사정보정은 필요가 없다</u>) x <span class=\"mark\">시</span>점수정 x <span class=\"mark\">지</span>역요인 비교 x <span class=\"mark\">개</span>별요인 비교 x <span class=\"mark\">그</span> 밖의 요인보정\n\n- 지역요인 비교치 : 열세이면 1-비율, 우세이면 1+비율"
+    },
+    {
+      "id": "intro-calc-30",
+      "subject": "intro_calc",
+      "num": 30,
+      "category": "부동산감정평가론",
+      "title": "수익환원법",
+      "codeText": "수익가액 = 순영업소득 ÷ 환원이율 (부부대저 = 부채감당률×대부비율×저당상수)",
+      "detailText": "수익환원법의 환원율 구하는 방법 : 시장추출법, 조성법, 투자결합법, 엘우드법, 부채감당법\n\n수익가액 = 순수익 / 환원이율 = 순영업소득 / 환원이율\n\n환원이율(자본환원율) = 순영업소득 / 부동산가치 x 100\n\n**투자결합법 :**\n\n\\* 금융적 투자결합법 : 환원이율 = (지분환원율 x 지분비율) + (저당환원율 x 저당비율)\n\n\\* 물리적 투자결합법 :\n\n1\\) 토지/건물 개별 환원이율\n\n토지의 자본환원율 = 자본수익률 (토지는 영속성, 비상각자산이므로 자본회수율=0)\n\n건물의 자본환원율 = 자본수익률 + 자본회수율(1÷경제적 잔존내용연수)\n\n2\\) <u>물리적 투자결합법의</u> 종합환원이율\n\n종합환원이율 = (토지환원이율 x 토지가치 구성비) + (건물환원이율 x 건물가치 구성비)\n\n<span class=\"mark\">3) 수익가액</span> = 순수익(순영업소득) ÷ 종합환원이율\n\n**<span class=\"mark\">부</span>채감당법**(저당투자자 입장) - <span class=\"mark\">부부대저</span>\n\n환원이율 = <span class=\"mark\">부</span>채감당률 x <span class=\"mark\">대</span>부비율 x <span class=\"mark\">저</span>당상수\n\n$$\\begin{aligned} \\text{[환원이율]} & = \\frac{\\text{[순영업소득]}}{\\text{[부채서비스액]}}\\ \\left( \\text{부채감당률} \\right) \\times \\frac{\\text{[대출액]}}{\\text{[부동산가치]}}\\ \\left( \\text{대부비율} \\right) \\times \\frac{\\text{[부채서비스액]}}{\\text{[대출액]}}\\ \\left( \\text{저당상수} \\right) \\\\ & = \\frac{\\text{[순영업소득]}}{\\text{[부동산가치]}} \\end{aligned}$$"
+    },
+    {
+      "id": "intro-calc-31",
+      "subject": "intro_calc",
+      "num": 31,
+      "category": "부동산감정평가론",
+      "title": "시산가액 조정에 의한 감정평가액을 구하기",
+      "codeText": "감정평가액 = Σ(각 시산가액 × 가중치)",
+      "detailText": "**<span class=\"mark\">감정평가액</span>** = Σ (각 시산가액 x 각각 부여된 가중치)\n\n- 조성비용를 통해 구한 시산가액 : 원가방식\n\n- 거래사례를 통해 구한 시산가액 : 비교방식\n\n- 임대료를 통해 구한 시산가액 : 수익방식"
+    }
+  ]
+};
+  </script>
+  <script>
+    (function() {
+      // State
+      const STORAGE_KEY_STATUS = 'rea_study_status_v1';
+      const STORAGE_KEY_THEME = 'rea_study_theme_v1';
+      const STORAGE_KEY_CUSTOM_DATA = 'rea_study_custom_data_v1';
+
+      let studyData = window.STUDY_DATA || { civil: [], intro_code: [], intro_calc: [] };
+      try {
+        const savedCustom = localStorage.getItem(STORAGE_KEY_CUSTOM_DATA);
+        if (savedCustom) {
+          const parsed = JSON.parse(savedCustom);
+          if (parsed.civil && parsed.civil.length) studyData = parsed;
+        }
+      } catch (e) {}
+
+      let itemStatus = {};
+      try {
+        itemStatus = JSON.parse(localStorage.getItem(STORAGE_KEY_STATUS) || '{}');
+      } catch (e) { itemStatus = {}; }
+
+      let currentSubject = 'civil';
+      let currentCategory = '전체';
+      let currentStatusFilter = 'all';
+      let currentBlindMode = 'none';
+      let searchQuery = '';
+      let isShuffled = false;
+      let fontScaleIndex = 1; // 0: 0.92, 1: 1.0, 2: 1.1, 3: 1.2
+      const fontScales = [0.92, 1.0, 1.1, 1.2];
+
+      // Theme init
+      const savedTheme = localStorage.getItem(STORAGE_KEY_THEME) || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeBtn(savedTheme);
+
+      function updateThemeBtn(theme) {
+        const btn = document.getElementById('btnTheme');
+        if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+      }
+
+      function saveStatus() {
+        try {
+          localStorage.setItem(STORAGE_KEY_STATUS, JSON.stringify(itemStatus));
+        } catch (e) {}
+        updateCountsAndProgress();
+      }
+
+      function getAllItemsForSubject(subj) {
+        if (subj === 'review_all') {
+          const all = [
+            ...(studyData.civil || []),
+            ...(studyData.intro_code || []),
+            ...(studyData.intro_calc || [])
+          ];
+          return all.filter(it => itemStatus[it.id] === 'unknown' || itemStatus[it.id] === 'fuzzy');
+        }
+        return studyData[subj] || [];
+      }
+
+      // Escape HTML helper
+      function escapeHtml(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
+      // Render LaTeX blocks into clean offline HTML formulas
+      function renderLatexBlock(latex) {
+        const raw = latex.replace(/^\$\$|\$\$/g, '').trim();
+
+        // Converse breaking point model
+        if (raw.includes('분기점') && raw.includes('\\sqrt')) {
+          return `
+            <div class="formula-block">
+              <div class="math-eq">
+                <span>A로부터의 분기점 거리 = </span>
+                <span class="math-frac blind-token">
+                  <span class="num">A와 B 사이의 전체 거리</span>
+                  <span class="den">1 + √( B의 크기 ÷ A의 크기 )</span>
+                </span>
+              </div>
+            </div>`;
+        }
+
+        // ROE leverage brace formula
+        if (raw.includes('내~수익률') && raw.includes('총자본수익률')) {
+          return `
+            <div class="formula-block">
+              <div class="math-eq">
+                <span>내 수익률(ROE) = </span>
+                <span class="brace-box blind-token">
+                  <span class="brace-top">총자본수익률</span>
+                  <span class="brace-sub">① 내 돈이 정직하게 번 몫</span>
+                </span>
+                <span> + </span>
+                <span class="brace-box blind-token">
+                  <span class="brace-top">(총자본수익률 - 차입금리) × 부채비율</span>
+                  <span class="brace-sub">② 남의 돈으로 남겨먹은 마진(지렛대)</span>
+                </span>
+              </div>
+            </div>`;
+        }
+
+        // Remaining loan balance brace formula
+        if (raw.includes('현재~대출잔액')) {
+          return `
+            <div class="formula-block">
+              <div class="math-eq">
+                <span>현재 대출잔액(미상환저당잔금) = </span>
+                <span class="brace-box blind-token">
+                  <span class="brace-top">원리금상환액</span>
+                  <span class="brace-sub">매년 낼 돈(연금)</span>
+                </span>
+                <span> × </span>
+                <span class="brace-box blind-token">
+                  <span class="brace-top">잔여기간의 연금의 현가계수</span>
+                  <span class="brace-sub">남은 기간 미래 이자 빼고 오늘 가치로 환산</span>
+                </span>
+              </div>
+            </div>`;
+        }
+
+        // Debt service
+        if (raw.includes('원리금상환액(부채서비스액)')) {
+          return `
+            <div class="formula-block">
+              <div class="math-eq">
+                <span>원리금상환액(부채서비스액) = </span>
+                <span class="blind-token"><b class="kw-bold">대출원금 × 저당상수(MC)</b></span>
+              </div>
+            </div>`;
+        }
+
+        // LQ Location Quotient
+        if (raw.includes('입지계수(LQ)')) {
+          return `
+            <div class="formula-block">
+              <div class="math-eq">
+                <span>입지계수(LQ) = </span>
+                <span class="math-frac blind-token">
+                  <span class="num">특정 지역의 해당 산업 구성비</span>
+                  <span class="den">전국의 해당 산업 구성비</span>
+                </span>
+                <span> = </span>
+                <span class="math-frac blind-token">
+                  <span class="num">( A지역 X산업 고용자 수 ÷ A지역 전체 고용자 수 )</span>
+                  <span class="den">( 전국 X산업 고용자 수 ÷ 전국 전체 고용자 수 )</span>
+                </span>
+              </div>
+            </div>`;
+        }
+
+        // Replacement cost per m2
+        if (raw.includes('재조달원가')) {
+          return `
+            <div class="formula-block">
+              <div class="math-eq">
+                <span>㎡당 재조달원가 = </span>
+                <span class="math-frac blind-token">
+                  <span class="num">총 공사비(총계) × ( 기준시점 지수 ÷ 준공시점 지수 )</span>
+                  <span class="den">연면적</span>
+                </span>
+              </div>
+            </div>`;
+        }
+
+        // Debt coverage method (부부대저)
+        if (raw.includes('[환원이율]') || raw.includes('부채감당률')) {
+          return `
+            <div class="formula-block">
+              <div class="math-eq">
+                <span>환원이율 = </span>
+                <span class="math-frac blind-token">
+                  <span class="num">순영업소득(NOI)</span>
+                  <span class="den">부채서비스액</span>
+                </span>
+                <span style="font-size:0.8rem; color:var(--text-secondary);">(부채감당률)</span>
+                <span> × </span>
+                <span class="math-frac blind-token">
+                  <span class="num">대출액</span>
+                  <span class="den">부동산가치</span>
+                </span>
+                <span style="font-size:0.8rem; color:var(--text-secondary);">(대부비율)</span>
+                <span> × </span>
+                <span class="math-frac blind-token">
+                  <span class="num">부채서비스액</span>
+                  <span class="den">대출액</span>
+                </span>
+                <span style="font-size:0.8rem; color:var(--text-secondary);">(저당상수)</span>
+                <span> = </span>
+                <span class="math-frac blind-token">
+                  <span class="num">순영업소득(NOI)</span>
+                  <span class="den">부동산가치</span>
+                </span>
+              </div>
+            </div>`;
+        }
+
+        // Fallback cleanup
+        const cleaned = raw
+          .replace(/\\text\{([^}]*)\}/g, '$1')
+          .replace(/~/g, ' ')
+          .replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, '($1 ÷ $2)');
+        return `<div class="formula-block"><div class="math-eq">${escapeHtml(cleaned)}</div></div>`;
+      }
+
+      // Format inline markdown with blind tokens
+      function formatInline(text, isCodeSection) {
+        if (!text) return '';
+        let s = String(text);
+
+        // Preserve <span class="mark">...</span> and <sup>, <u>
+        const placeholders = [];
+        function putPlaceholder(html) {
+          const idx = placeholders.length;
+          placeholders.push(html);
+          return `\u0000PH${idx}\u0000`;
+        }
+
+        // Handle <span class="mark">**...**</span> or **<span class="mark">...</span>** or <span class="mark">...</span>
+        s = s.replace(/\*\*<span class="mark">([\s\S]*?)<\/span>\*\*/g, (_, inner) => {
+          return putPlaceholder(`<span class="kw-mark blind-token">${inner.replace(/\*\*/g, '')}</span>`);
+        });
+        s = s.replace(/<span class="mark">\*\*([\s\S]*?)\*\*<\/span>/g, (_, inner) => {
+          return putPlaceholder(`<span class="kw-mark blind-token">${inner}</span>`);
+        });
+        s = s.replace(/<span class="mark">([\s\S]*?)<\/span>/g, (_, inner) => {
+          return putPlaceholder(`<span class="kw-mark blind-token">${inner.replace(/\*\*/g, '')}</span>`);
+        });
+
+        // Handle **bold**
+        s = s.replace(/\*\*([^*]+)\*\*/g, (_, inner) => {
+          return putPlaceholder(`<strong class="kw-bold blind-token">${escapeHtml(inner)}</strong>`);
+        });
+
+        // Handle <u>...</u>
+        s = s.replace(/<u>([\s\S]*?)<\/u>/g, (_, inner) => {
+          return putPlaceholder(`<u class="blind-token" style="text-decoration-thickness:2px;">${inner}</u>`);
+        });
+
+        // Handle <sup>...</sup>
+        s = s.replace(/<sup>([\s\S]*?)<\/sup>/g, (_, inner) => {
+          return putPlaceholder(`<sup>${escapeHtml(inner)}</sup>`);
+        });
+
+        // Unescape markdown backslashes like \[ \] -\> \) \* \- \< \>
+        s = s.replace(/\\([[\]()>*<\-])/g, '$1');
+
+        // Escape remaining HTML
+        s = escapeHtml(s);
+
+        // If no explicit bold/mark existed on this line, wrap key parts for keyword-blind mode
+        if (placeholders.length === 0 && s.trim().length > 0) {
+          if (isCodeSection) {
+            s = `<span class="kw-bold blind-token">${s}</span>`;
+          } else if (s.includes('->') || s.includes('→')) {
+            s = s.replace(/(->|→)\s*(.+)$/, (_, arrow, rhs) => `${arrow} <span class="kw-bold blind-token">${rhs}</span>`);
+          } else if (s.includes(' : ')) {
+            s = s.replace(/ : (.+)$/, (_, rhs) => ` : <span class="blind-token">${rhs}</span>`);
+          } else if (s.includes(' = ')) {
+            s = s.replace(/ = (.+)$/, (_, rhs) => ` = <span class="blind-token">${rhs}</span>`);
+          } else {
+            s = `<span class="blind-token">${s}</span>`;
+          }
+        }
+
+        // Restore placeholders (loop to handle nested tags like <u>...<span class="mark">...</span>...</u>)
+        while (/\u0000PH\d+\u0000/.test(s)) {
+          s = s.replace(/\u0000PH(\d+)\u0000/g, (_, idx) => placeholders[Number(idx)]);
+        }
+        return s;
+      }
+
+      // Format Rice Calculator keystroke lines (e.g. ": 3년 (1+r) xx== x 금액")
+      function renderKeystrokeLine(line) {
+        const content = line.replace(/^:\s*/, '').trim();
+        // Tokenize into keycaps
+        const tokens = content.split(/\s+/);
+        const htmlTokens = tokens.map(tok => {
+          if (tok === 'GT') return `<span class="keycap gt">GT</span>`;
+          if (/^[x×÷=+-]+$/i.test(tok)) return `<span class="keycap op">${escapeHtml(tok)}</span>`;
+          return `<span class="keycap">${escapeHtml(tok)}</span>`;
+        }).join(' ');
+        return `
+          <div class="calc-keystroke-row">
+            <span class="calc-badge">🧮 쌀집계산기 작동법</span>
+            <span class="blind-token">${htmlTokens}</span>
+          </div>`;
+      }
+
+      // Render Markdown Tables + Lists + Paragraphs + Formulas
+      function renderDetailHtml(detailText) {
+        if (!detailText) return '';
+        const lines = detailText.split('\n');
+        let html = '';
+        let inTable = false;
+        let tableRows = [];
+
+        function flushTable() {
+          if (!inTable || tableRows.length === 0) return;
+          inTable = false;
+          let tbl = '<div class="table-wrap"><table class="study-table">';
+          tableRows.forEach((row, rIdx) => {
+            const cells = row.split('|').slice(1, -1).map(c => c.trim());
+            if (rIdx === 1 && cells.every(c => /^[: -]+$/.test(c))) return; // separator row
+            const tag = rIdx === 0 ? 'th' : 'td';
+            tbl += '<tr>' + cells.map((c, cIdx) => {
+              const formatted = (rIdx > 0 && cIdx > 0) ? formatInline(c, true) : formatInline(c, false);
+              return `<${tag}>${formatted}</${tag}>`;
+            }).join('') + '</tr>';
+          });
+          tbl += '</table></div>';
+          html += tbl;
+          tableRows = [];
+        }
+
+        for (let i = 0; i < lines.length; i++) {
+          const rawLine = lines[i];
+          const trimmed = rawLine.trim();
+
+          if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
+            inTable = true;
+            tableRows.push(trimmed);
+            continue;
+          } else if (inTable) {
+            flushTable();
+          }
+
+          if (!trimmed) continue;
+
+          // LaTeX block
+          if (trimmed.startsWith('$') || trimmed.includes('\\text{') || trimmed.includes('\\frac{')) {
+            html += renderLatexBlock(trimmed);
+            continue;
+          }
+
+          // Rice calculator keystroke line (starts with ": 3년")
+          if (/^:\s*3년/.test(trimmed)) {
+            html += renderKeystrokeLine(trimmed);
+            continue;
+          }
+
+          // Formula line starting with ": "
+          if (/^:\s+/.test(trimmed)) {
+            const formulaPart = trimmed.replace(/^:\s+/, '');
+            html += `<div class="formula-block"><div class="math-eq">공식 : <span class="kw-bold blind-token">${escapeHtml(formulaPart)}</span></div></div>`;
+            continue;
+          }
+
+          // Subheader ###
+          if (trimmed.startsWith('### ')) {
+            html += `<h4>${formatInline(trimmed.replace(/^###\s+/, ''), false)}</h4>`;
+            continue;
+          }
+
+          // Bullet or numbered list item
+          if (/^(\d+[.)]|[-*•])\s+/.test(trimmed)) {
+            const m = trimmed.match(/^(\d+[.)]|[-*•])\s+(.*)$/);
+            html += `<div style="display:flex; gap:6px; margin:3px 0;"><span style="font-weight:700; color:var(--text-secondary); flex-shrink:0;">${escapeHtml(m[1])}</span><div style="flex:1;">${formatInline(m[2], false)}</div></div>`;
+            continue;
+          }
+
+          html += `<p>${formatInline(trimmed, false)}</p>`;
+        }
+        if (inTable) flushTable();
+        return html;
+      }
+
+      // Render Category Chips
+      function renderCategoryChips() {
+        const wrap = document.getElementById('categoryChips');
+        const items = getAllItemsForSubject(currentSubject);
+        const cats = ['전체'];
+        items.forEach(it => {
+          if (it.category && !cats.includes(it.category)) cats.push(it.category);
+        });
+        if (!cats.includes(currentCategory)) currentCategory = '전체';
+
+        wrap.innerHTML = cats.map(cat => {
+          const count = cat === '전체' ? items.length : items.filter(i => i.category === cat).length;
+          return `<button class="filter-chip ${cat === currentCategory ? 'active' : ''}" data-cat="${escapeHtml(cat)}">${escapeHtml(cat)} (${count})</button>`;
+        }).join('');
+      }
+
+      // Update Top Counts & Progress Bar
+      function updateCountsAndProgress() {
+        ['civil', 'intro_code', 'intro_calc'].forEach(subj => {
+          const el = document.getElementById(`count-${subj}`);
+          if (el) el.textContent = (studyData[subj] || []).length;
+        });
+        const reviewAllCount = getAllItemsForSubject('review_all').length;
+        const revEl = document.getElementById('count-review_all');
+        if (revEl) revEl.textContent = reviewAllCount;
+
+        const subjItems = getAllItemsForSubject(currentSubject);
+        const total = subjItems.length || 1;
+        let known = 0, fuzzy = 0, unknown = 0;
+        subjItems.forEach(it => {
+          const st = itemStatus[it.id];
+          if (st === 'known') known++;
+          else if (st === 'fuzzy') fuzzy++;
+          else if (st === 'unknown') unknown++;
+        });
+
+        const subjNames = {
+          civil: '⚖️ 민법 암기코드',
+          intro_code: '🏢 학개론 암기코드',
+          intro_calc: '🧮 학개론 계산공식',
+          review_all: '🔥 미암기/헷갈림 모아보기'
+        };
+        document.getElementById('currentViewLabel').textContent = `${subjNames[currentSubject]} (총 ${subjItems.length}개)`;
+        document.getElementById('statKnown').textContent = `✅ 외웠음 ${known}`;
+        document.getElementById('statFuzzy').textContent = `⚠️ 헷갈림 ${fuzzy}`;
+        document.getElementById('statUnknown').textContent = `🔥 못외움 ${unknown}`;
+
+        document.getElementById('barKnown').style.width = `${(known / total) * 100}%`;
+        document.getElementById('barFuzzy').style.width = `${(fuzzy / total) * 100}%`;
+        document.getElementById('barUnknown').style.width = `${(unknown / total) * 100}%`;
+      }
+
+      // Main Render List
+      function renderCards() {
+        const container = document.getElementById('cardList');
+        let items = getAllItemsForSubject(currentSubject).slice();
+
+        if (currentCategory !== '전체') {
+          items = items.filter(it => it.category === currentCategory);
+        }
+
+        if (currentStatusFilter !== 'all') {
+          items = items.filter(it => {
+            const st = itemStatus[it.id] || 'none';
+            if (currentStatusFilter === 'unmastered') return st !== 'known';
+            return st === currentStatusFilter;
+          });
+        }
+
+        if (searchQuery.trim() !== '') {
+          const q = searchQuery.trim().toLowerCase();
+          items = items.filter(it => {
+            return (it.title && it.title.toLowerCase().includes(q)) ||
+                   (it.codeText && it.codeText.toLowerCase().includes(q)) ||
+                   (it.detailText && it.detailText.toLowerCase().includes(q)) ||
+                   (it.category && it.category.toLowerCase().includes(q));
+          });
+        }
+
+        if (isShuffled) {
+          for (let i = items.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [items[i], items[j]] = [items[j], items[i]];
+          }
+        }
+
+        if (items.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <h3 style="margin:0 0 8px;">조건에 맞는 항목이 없습니다 ✨</h3>
+              <p style="margin:0; font-size:0.9rem;">검색어를 지우거나 필터를 '전체'로 변경해 보세요.</p>
+            </div>`;
+          return;
+        }
+
+        container.innerHTML = items.map(item => {
+          const st = itemStatus[item.id] || 'none';
+          const codeHtml = item.codeText
+            ? item.codeText.split('\n').map(l => formatInline(l, true)).join('<br/>')
+            : '';
+          const detailHtml = renderDetailHtml(item.detailText);
+          const isCalc = item.subject === 'intro_calc';
+
+          return `
+            <article class="study-card" data-id="${item.id}" data-status="${st}">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <span class="num-badge">#${item.num}</span>
+                  <span class="cat-badge">${escapeHtml(item.category)}</span>
+                  ${item.pageRef ? `<span class="page-badge">📖 ${escapeHtml(item.pageRef)}</span>` : ''}
+                  <h2 class="card-title">${escapeHtml(item.title)}</h2>
+                </div>
+                <div class="card-actions">
+                  <button class="card-peek-btn" data-action="peek" title="이 카드 가림막 모두 열기/닫기">👁️</button>
+                  <button class="status-btn ${st === 'unknown' ? 'active-unknown' : ''}" data-action="status" data-val="unknown">🔥 못외움</button>
+                  <button class="status-btn ${st === 'fuzzy' ? 'active-fuzzy' : ''}" data-action="status" data-val="fuzzy">⚠️ 헷갈림</button>
+                  <button class="status-btn ${st === 'known' ? 'active-known' : ''}" data-action="status" data-val="known">✅ 외웠음</button>
+                </div>
+              </div>
+              <div class="card-body">
+                ${codeHtml ? `
+                <div class="mnemonic-box" data-box="code">
+                  <div class="section-overlay" data-action="reveal-box">👆 터치하여 ${isCalc ? '핵심 공식 요약' : '암기코드'} 확인</div>
+                  <div class="section-label">${isCalc ? '⚡ 핵심 공식 요약' : '🧠 암기코드'}</div>
+                  <div class="mnemonic-content">${codeHtml}</div>
+                </div>` : ''}
+                <div class="detail-box" data-box="detail">
+                  <div class="section-overlay" data-action="reveal-box">👆 터치하여 ${isCalc ? '세부 공식 · 계산기 작동법' : '세부내용'} 확인</div>
+                  <div class="detail-label">${isCalc ? '📐 공식 및 쌀집계산기 풀이' : '📖 세부내용'}</div>
+                  <div class="detail-content">${detailHtml}</div>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join('');
+      }
+
+      // Set Blind Mode
+      function setBlindMode(mode) {
+        currentBlindMode = mode;
+        document.body.className = `mode-${mode}`;
+        document.querySelectorAll('[data-blind]').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-blind') === mode);
+        });
+        // Reset temporary reveals
+        document.querySelectorAll('.study-card.force-reveal, .mnemonic-box.revealed, .detail-box.revealed, .blind-token.revealed').forEach(el => {
+          el.classList.remove('force-reveal', 'revealed');
+        });
+      }
+
+      // Event Listeners
+      document.getElementById('subjectTabs').addEventListener('click', e => {
+        const tab = e.target.closest('.subject-tab');
+        if (!tab) return;
+        currentSubject = tab.getAttribute('data-subject');
+        currentCategory = '전체';
+        document.querySelectorAll('.subject-tab').forEach(t => t.classList.toggle('active', t === tab));
+        renderCategoryChips();
+        updateCountsAndProgress();
+        renderCards();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      document.getElementById('categoryChips').addEventListener('click', e => {
+        const chip = e.target.closest('.filter-chip');
+        if (!chip) return;
+        currentCategory = chip.getAttribute('data-cat');
+        renderCategoryChips();
+        renderCards();
+      });
+
+      document.getElementById('statusChips').addEventListener('click', e => {
+        const chip = e.target.closest('.status-chip');
+        if (!chip) return;
+        currentStatusFilter = chip.getAttribute('data-status-filter');
+        document.querySelectorAll('.status-chip').forEach(c => c.classList.toggle('active', c === chip));
+        renderCards();
+      });
+
+      document.getElementById('blindControls').addEventListener('click', e => {
+        const btn = e.target.closest('[data-blind]');
+        if (!btn) return;
+        setBlindMode(btn.getAttribute('data-blind'));
+      });
+
+      document.getElementById('bottomBar').addEventListener('click', e => {
+        const btn = e.target.closest('[data-blind]');
+        if (btn) {
+          setBlindMode(btn.getAttribute('data-blind'));
+          return;
+        }
+        if (e.target.closest('#btnScrollTop')) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+
+      // Card delegation (status buttons, blind token toggle, overlay toggle)
+      document.getElementById('cardList').addEventListener('click', e => {
+        const card = e.target.closest('.study-card');
+        if (!card) return;
+        const id = card.getAttribute('data-id');
+
+        const statusBtn = e.target.closest('[data-action="status"]');
+        if (statusBtn) {
+          const val = statusBtn.getAttribute('data-val');
+          if (itemStatus[id] === val) {
+            delete itemStatus[id];
+          } else {
+            itemStatus[id] = val;
+          }
+          saveStatus();
+          if (currentStatusFilter !== 'all' || currentSubject === 'review_all') {
+            renderCards();
+          } else {
+            const newSt = itemStatus[id] || 'none';
+            card.setAttribute('data-status', newSt);
+            card.querySelectorAll('[data-action="status"]').forEach(b => {
+              const v = b.getAttribute('data-val');
+              b.className = `status-btn ${newSt === v ? 'active-' + v : ''}`;
+            });
+          }
+          return;
+        }
+
+        const peekBtn = e.target.closest('[data-action="peek"]');
+        if (peekBtn) {
+          card.classList.toggle('force-reveal');
+          return;
+        }
+
+        const overlay = e.target.closest('[data-action="reveal-box"]');
+        if (overlay) {
+          const box = overlay.parentElement;
+          if (box) box.classList.add('revealed');
+          return;
+        }
+
+        // Toggle back if clicking revealed box in code/detail/all mode
+        if (currentBlindMode === 'code' || currentBlindMode === 'detail' || currentBlindMode === 'all') {
+          const rBox = e.target.closest('.mnemonic-box.revealed, .detail-box.revealed');
+          if (rBox && !e.target.closest('.blind-token')) {
+            rBox.classList.remove('revealed');
+            return;
+          }
+        }
+
+        // Keyword blind token click
+        if (currentBlindMode === 'keyword') {
+          const token = e.target.closest('.blind-token');
+          if (token) {
+            token.classList.toggle('revealed');
+          }
+        }
+      });
+
+      // Search input
+      const searchInput = document.getElementById('searchInput');
+      const btnClearSearch = document.getElementById('btnClearSearch');
+      searchInput.addEventListener('input', () => {
+        searchQuery = searchInput.value;
+        btnClearSearch.style.display = searchQuery ? 'block' : 'none';
+        renderCards();
+      });
+      btnClearSearch.addEventListener('click', () => {
+        searchInput.value = '';
+        searchQuery = '';
+        btnClearSearch.style.display = 'none';
+        renderCards();
+      });
+
+      // Shuffle
+      document.getElementById('btnShuffle').addEventListener('click', e => {
+        isShuffled = !isShuffled;
+        e.currentTarget.style.borderColor = isShuffled ? 'var(--primary)' : '';
+        e.currentTarget.style.color = isShuffled ? 'var(--primary)' : '';
+        renderCards();
+      });
+
+      // Font scale
+      document.getElementById('btnFontSize').addEventListener('click', () => {
+        fontScaleIndex = (fontScaleIndex + 1) % fontScales.length;
+        document.documentElement.style.setProperty('--font-scale', fontScales[fontScaleIndex]);
+      });
+
+      // Theme toggle
+      document.getElementById('btnTheme').addEventListener('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme');
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem(STORAGE_KEY_THEME, next);
+        updateThemeBtn(next);
+      });
+
+      // Sync Modal
+      const STORAGE_KEY_CLOUD_URL = 'rea_study_cloud_url_v1';
+      const syncModal = document.getElementById('syncModal');
+      const syncCodeArea = document.getElementById('syncCodeArea');
+      const cloudUrlInput = document.getElementById('cloudSyncUrlInput');
+      if (cloudUrlInput) {
+        cloudUrlInput.value = localStorage.getItem(STORAGE_KEY_CLOUD_URL) || '';
+      }
+
+      document.getElementById('btnSaveCloudUrl')?.addEventListener('click', () => {
+        const val = cloudUrlInput.value.trim();
+        localStorage.setItem(STORAGE_KEY_CLOUD_URL, val);
+        alert('구글 드라이브 클라우드 동기화 URL이 저장되었습니다!');
+      });
+
+      document.getElementById('btnCloudPush')?.addEventListener('click', async () => {
+        const url = (cloudUrlInput?.value || '').trim();
+        if (!url) {
+          alert('먼저 구글 드라이브(Apps Script) 웹앱 URL을 입력해 주세요. (폴더 내 구글드라이브_설치안내.md 참고)');
+          return;
+        }
+        try {
+          await fetch(url, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ updatedAt: new Date().toISOString(), status: itemStatus })
+          });
+          alert('☁️ 구글 드라이브 클라우드에 현재 암기 진도를 저장했습니다!');
+        } catch (err) {
+          alert('클라우드 저장 중 오류가 발생했습니다: ' + err.message);
+        }
+      });
+
+      document.getElementById('btnCloudPull')?.addEventListener('click', async () => {
+        const url = (cloudUrlInput?.value || '').trim();
+        if (!url) {
+          alert('먼저 구글 드라이브(Apps Script) 웹앱 URL을 입력해 주세요.');
+          return;
+        }
+        try {
+          const res = await fetch(url + '?action=get');
+          const data = await res.json();
+          if (data && data.status) {
+            itemStatus = { ...itemStatus, ...data.status };
+            saveStatus();
+            renderCards();
+            alert('📥 구글 드라이브 클라우드에서 최신 암기 진도를 불러왔습니다!');
+          } else {
+            alert('클라우드에 저장된 진도 데이터가 없습니다.');
+          }
+        } catch (err) {
+          alert('클라우드 불러오기 실패: ' + err.message);
+        }
+      });
+
+      document.getElementById('btnSyncModal').addEventListener('click', () => {
+        syncCodeArea.value = btoa(encodeURIComponent(JSON.stringify(itemStatus)));
+        syncModal.classList.add('open');
+      });
+      document.getElementById('btnCloseModal').addEventListener('click', () => {
+        syncModal.classList.remove('open');
+      });
+      syncModal.addEventListener('click', e => {
+        if (e.target === syncModal) syncModal.classList.remove('open');
+      });
+
+      document.getElementById('btnCopySyncCode').addEventListener('click', () => {
+        syncCodeArea.value = btoa(encodeURIComponent(JSON.stringify(itemStatus)));
+        syncCodeArea.select();
+        navigator.clipboard?.writeText(syncCodeArea.value);
+        alert('현재 학습 진도 코드가 복사되었습니다! 스마트폰이나 다른 PC에 붙여넣어 이어하세요.');
+      });
+
+      document.getElementById('btnApplySyncCode').addEventListener('click', () => {
+        try {
+          const raw = syncCodeArea.value.trim();
+          const decoded = JSON.parse(decodeURIComponent(atob(raw)));
+          itemStatus = { ...itemStatus, ...decoded };
+          saveStatus();
+          renderCards();
+          alert('학습 진도가 성공적으로 복원되었습니다!');
+        } catch (err) {
+          alert('올바른 진도 코드가 아닙니다.');
+        }
+      });
+
+      document.getElementById('btnExportJson').addEventListener('click', () => {
+        const blob = new Blob([JSON.stringify(itemStatus, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `공인중개사_암기진도_${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+      });
+
+      document.getElementById('inputImportJson').addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          try {
+            const data = JSON.parse(ev.target.result);
+            itemStatus = { ...itemStatus, ...data };
+            saveStatus();
+            renderCards();
+            alert('파일에서 학습 진도를 성공적으로 불러왔습니다!');
+          } catch (err) {
+            alert('JSON 파일 형식이 올바르지 않습니다.');
+          }
+        };
+        reader.readAsText(file);
+      });
+
+      document.getElementById('btnResetProgress').addEventListener('click', () => {
+        if (!confirm('현재 과목의 체크 기록(외웠음/헷갈림/못외움)을 초기화할까요?')) return;
+        getAllItemsForSubject(currentSubject).forEach(it => delete itemStatus[it.id]);
+        saveStatus();
+        renderCards();
+      });
+
+      document.getElementById('inputMdFiles').addEventListener('change', async e => {
+        const files = Array.from(e.target.files || []);
+        if (!files.length) return;
+        alert('옵시디언 원본 .md 파일 동기화는 폴더 내 [옵시디언_동기화.bat]을 더블클릭하시면 index.html에 영구 반영됩니다.');
+      });
+
+      // Register Service Worker for Offline Mobile PWA if served over http/https
+      if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.protocol === 'http:')) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      }
+
+      // Initial render
+      renderCategoryChips();
+      updateCountsAndProgress();
+      renderCards();
+    })();
+  </script>
+</body>
+</html>

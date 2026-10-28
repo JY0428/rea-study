@@ -1,0 +1,17 @@
+{
+  "name": "공인중개사 암기코드 & 계산공식 마스터",
+  "short_name": "암기마스터",
+  "description": "민법 암기코드, 학개론 암기코드, 학개론 계산공식 오프라인/모바일 스캔 학습 웹앱",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f4f6f9",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
